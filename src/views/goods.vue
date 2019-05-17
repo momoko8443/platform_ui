@@ -1,10 +1,10 @@
 <template>
-    <a-row type="flex" justify="center">
-      <a-col :span="4" :pull="1">
+    <a-row type="flex" justify="center" :gutter="50">
+      <a-col :span="4">
           <h4>分类标签</h4>
           <tags-wall></tags-wall>
       </a-col>
-      <a-col :span="12">
+      <a-col :span="12" :pull="1">
           <div style="text-align:right"> 
               <goods-create></goods-create>
           </div>

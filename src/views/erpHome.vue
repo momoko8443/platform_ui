@@ -7,18 +7,18 @@
 import applicationTile from '../components/applicationTile';
 export default {
     name: "benyun-dashboard",
+    components:{
+        "application-tile": applicationTile
+    },
     data: function(){
         return {
             usersApps : [
-                {title:"物", desc: "轻型产业链管理",path:"erp"},
-                {title:"人", desc: "人员账号管理",path:"home"},
-                {title:"金", desc: "财务管理",path:"home"},
-                {title:"链", desc: "企业关系管理",path:"home"}
+                {title:"始", desc: "元器件录入",path:"goods"},
+                {title:"存", desc: "库存查看",path:"warehouse"},
+                {title:"进", desc: "进货链",path:"home"},
+                {title:"销", desc: "销售链",path:"home"}
                 ]
         };
-    },
-    components:{
-        "application-tile": applicationTile
     }
 }
 </script>

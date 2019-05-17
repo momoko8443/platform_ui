@@ -4,15 +4,15 @@
       <a-icon type="plus"/>添加
     </a-button>
     <a-drawer
-      title="创建一个物品"
-      :width="720"
+      title="创建一种物品"
+      :width="480"
       @close="onClose"
       :visible="visible"
       :wrapStyle="{height: 'calc(100% - 108px)',overflow: 'auto',paddingBottom: '108px'}"
     >
       <a-form :form="form" layout="vertical" hideRequiredMark>
         <a-row :gutter="16">
-          <a-col :span="12">
+          <a-col :span="24">
             <a-form-item label="名称">
               <a-input
                 v-decorator="['name', {
@@ -22,24 +22,32 @@
               />
             </a-form-item>
           </a-col>
-          <a-col :span="12">
-            <a-form-item label="Url">
+        </a-row>
+        <a-row :gutter="16">
+          <a-col :span="24">
+            <a-form-item label="编号">
               <a-input
-                v-decorator="['url', {
-                  rules: [{ required: true, message: 'please enter url' }]
+                v-decorator="['code', {
+                  rules: [{ required: true, message: '请输入编号' }]
                 }]"
                 style="width: 100%"
-                addonBefore="http://"
-                addonAfter=".com"
-                placeholder="please enter url"
+                placeholder="请输入编号"
               />
             </a-form-item>
           </a-col>
         </a-row>
         <a-row :gutter="16">
-          <a-col :span="12">
-            <a-form-item label="Owner">
-              <a-select
+          <a-col :span="24">
+            <a-form-item label="图片">
+              <picture-uploader></picture-uploader>
+            </a-form-item>
+          </a-col>
+        </a-row>
+        <a-row :gutter="16">
+          <a-col :span="24">
+            <a-form-item label="标签">
+              <tags-bar></tags-bar>
+              <!-- <a-select
                 v-decorator="['owner', {
                   rules: [{ required: true, message: 'Please select an owner' }]
                 }]"
@@ -47,49 +55,17 @@
               >
                 <a-select-option value="xiao">Xiaoxiao Fu</a-select-option>
                 <a-select-option value="mao">Maomao Zhou</a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :span="12">
-            <a-form-item label="类型">
-              <a-select
-                v-decorator="['type', {
-                  rules: [{ required: true, message: 'Please choose the type' }]
-                }]"
-                placeholder="Please choose the type"
-              >
-                <a-select-option value="private">Private</a-select-option>
-                <a-select-option value="public">Public</a-select-option>
-              </a-select>
+              </a-select> -->
             </a-form-item>
           </a-col>
         </a-row>
-        <a-row :gutter="16">
-          <a-col :span="12">
-            <a-form-item label="Approver">
-              <a-select
-                v-decorator="['approver', {
-                  rules: [{ required: true, message: 'Please choose the approver' }]
-                }]"
-                placeholder="Please choose the approver"
-              >
-                <a-select-option value="jack">Jack Ma</a-select-option>
-                <a-select-option value="tom">Tom Liu</a-select-option>
-              </a-select>
+         <a-row :gutter="16">
+          <a-col :span="24">
+            <a-form-item label="自定义属性">
+              <custom-field></custom-field>
             </a-form-item>
           </a-col>
-          <a-col :span="12">
-            <a-form-item label="DateTime">
-              <a-date-picker
-                v-decorator="['dateTime', {
-                  rules: [{ required: true, message: 'Please choose the dateTime' }]
-                }]"
-                style="width: 100%"
-                :getPopupContainer="trigger => trigger.parentNode"
-              />
-            </a-form-item>
-          </a-col>
-        </a-row>
+         </a-row>
         <a-row :gutter="16">
           <a-col :span="24">
             <a-form-item label="描述">
@@ -123,8 +99,17 @@
   </div>
 </template>
 <script>
+
+import tagsBar from './tagsBar';
+import pictureUploader from './pictureUploader';
+import customField from './customField';
 export default {
   name: "goodsCreate",
+  components:{
+    "tags-bar":tagsBar,
+    "picture-uploader": pictureUploader,
+    "custom-field": customField
+  },
   data() {
     return {
       form: this.$form.createForm(this),

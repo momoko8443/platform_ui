@@ -1,13 +1,14 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+import erpHome from './views/erpHome.vue'
 import dashboard from './views/dashboard.vue'
 import warehouse from './views/warehouse.vue'
 import goods from './views/goods.vue'
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history',
+  mode: 'hash',
   base: process.env.BASE_URL,
   routes: [
     {
@@ -19,21 +20,34 @@ export default new Router({
           // 当 /user/:id/profile 匹配成功，
           // UserProfile 会被渲染在 User 的 <router-view> 中
           path: '',
-          component: dashboard
+          name: 'dashboard',
+          component: dashboard,
+        },
+        {
+          path:'erp',
+          name:'erp',
+          component: erpHome,
         },
         {
           // 当 /user/:id/posts 匹配成功
           // UserPosts 会被渲染在 User 的 <router-view> 中
           path: 'warehouse',
+          name: 'warehouse',
           component: warehouse
         },
         {
           // 当 /user/:id/posts 匹配成功
           // UserPosts 会被渲染在 User 的 <router-view> 中
           path: 'goods',
+          name: 'goods',
           component: goods
         },
       ]
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import(/* webpackChunkName: "about" */ './views/login.vue')
     },
     {
       path: '/about',
