@@ -5,27 +5,35 @@
           <tags-wall></tags-wall>
       </a-col>
       <a-col :span="20">
-          <a-row type="flex" justify="end" :gutter="8">
-            <a-col :span="16">
-              
-            </a-col>
+          <a-row type="flex" justify="start" :gutter="8">
              <a-col :span="8">
-              <store-chain-item-create></store-chain-item-create>
+               <a-button type="primary" @click="addPurchaseOrder">
+                    <a-icon type="plus"/>添加新采购
+                </a-button>
             </a-col>
           </a-row>
           <a-divider />
           <a-row type="flex" justify="start" :gutter="8">
               <a-col :md="6" :lg="4">
-                <store-lane title="运输中/生产中" :chainItems="inputChainItems" laneType="inputStore" @addChainItem="addChainItemHandler"></store-lane>
+                <store-lane title="新采购/询价中" :chainItems="inputChainItems" laneType="inputStore" @addChainItem="addChainItemHandler"></store-lane>
               </a-col>
+              <!-- <a-col :md="6" :lg="4">
+                <store-lane title="询价中" :chainItems="storeChainItems" laneType="inStore" @addChainItem="addChainItemHandler"></store-lane>
+              </a-col> -->
               <a-col :md="6" :lg="4">
-                <store-lane title="在库" :chainItems="storeChainItems" laneType="inStore" @addChainItem="addChainItemHandler"></store-lane>
-              </a-col>
-              <a-col :md="6" :lg="4">
-                <store-lane title="出库中/运输中" :chainItems="outputChainItems" laneType="outputStore" @addChainItem="addChainItemHandler"></store-lane>
+                <store-lane title="供应商已确认" :chainItems="outputChainItems" laneType="outputStore" @addChainItem="addChainItemHandler"></store-lane>
               </a-col>
               <a-col :md="6" :lg="4" >
-                <store-lane title="取消/异常" :chainItems="exceptionChainItems" laneType="cancelStore" @addChainItem="addChainItemHandler"></store-lane>
+                <store-lane title="运输中" :chainItems="exceptionChainItems" laneType="cancelStore" @addChainItem="addChainItemHandler"></store-lane>
+              </a-col>
+              <a-col :md="6" :lg="4" >
+                <store-lane title="已入库" :chainItems="exceptionChainItems" laneType="cancelStore" @addChainItem="addChainItemHandler"></store-lane>
+              </a-col>
+              <a-col :md="6" :lg="4" >
+                <store-lane title="完成支付" :chainItems="exceptionChainItems" laneType="cancelStore" @addChainItem="addChainItemHandler"></store-lane>
+              </a-col>
+              <a-col :md="6" :lg="4" >
+                <store-lane title="异常/取消" :chainItems="exceptionChainItems" laneType="cancelStore" @addChainItem="addChainItemHandler"></store-lane>
               </a-col>
           </a-row>
       </a-col>
@@ -34,17 +42,18 @@
 <script>
 import tagsWall from "../components/erp/tagsWall";
 import storeLane from "../components/erp/storeLane";
-import storeChainItemCreate from '../components/erp/storeChainItemCreate';
 export default {
-    name: "warehouse",
+    name: "purchaseMgr",
     components: {
         "tags-wall": tagsWall,
         "store-lane": storeLane,
-        "store-chain-item-create":storeChainItemCreate
     },
     methods: {
       addChainItemHandler: function(laneType){
         alert(laneType);
+      },
+      addPurchaseOrder: function(){
+          this.$router.push({name: "purchase_create"});
       }
     },
     data:function(){

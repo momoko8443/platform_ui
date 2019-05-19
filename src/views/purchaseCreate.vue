@@ -5,42 +5,37 @@
           <tags-wall></tags-wall>
       </a-col>
       <a-col :span="20">
-          <a-row type="flex" justify="end" :gutter="8">
-            <a-col :span="16">
-              
-            </a-col>
-             <a-col :span="8">
-              <store-chain-item-create></store-chain-item-create>
-            </a-col>
-          </a-row>
           <a-divider />
-          <a-row type="flex" justify="start" :gutter="8">
-              <a-col :md="6" :lg="4">
-                <store-lane title="运输中/生产中" :chainItems="inputChainItems" laneType="inputStore" @addChainItem="addChainItemHandler"></store-lane>
-              </a-col>
-              <a-col :md="6" :lg="4">
-                <store-lane title="在库" :chainItems="storeChainItems" laneType="inStore" @addChainItem="addChainItemHandler"></store-lane>
-              </a-col>
-              <a-col :md="6" :lg="4">
-                <store-lane title="出库中/运输中" :chainItems="outputChainItems" laneType="outputStore" @addChainItem="addChainItemHandler"></store-lane>
-              </a-col>
-              <a-col :md="6" :lg="4" >
-                <store-lane title="取消/异常" :chainItems="exceptionChainItems" laneType="cancelStore" @addChainItem="addChainItemHandler"></store-lane>
-              </a-col>
-          </a-row>
+           <a-row :gutter="32" justify="space-around" align="middle">
+             <a-col :span="12">
+               <a-input-search
+                placeholder="请输入查询关键字"
+                enterButton
+              />
+               <div style="height:30px"></div>
+               <purchase-items-list></purchase-items-list>
+             </a-col>
+             <a-col :md="12" :xl="8">
+               <a-affix :offsetTop="this.top" >
+                <purchase-order></purchase-order>
+               </a-affix>
+             </a-col>
+           </a-row>
+          
       </a-col>
     </a-row>
 </template>
 <script>
 import tagsWall from "../components/erp/tagsWall";
-import storeLane from "../components/erp/storeLane";
-import storeChainItemCreate from '../components/erp/storeChainItemCreate';
+import purchaseItemsList from "../components/erp/purchaseItemsList";
+import purchaseOrder from "../components/erp/purchaseOrder";
 export default {
-    name: "warehouse",
+    name: "purchaseMgr",
     components: {
         "tags-wall": tagsWall,
-        "store-lane": storeLane,
-        "store-chain-item-create":storeChainItemCreate
+        "purchase-items-list":purchaseItemsList,
+        "purchase-order": purchaseOrder
+
     },
     methods: {
       addChainItemHandler: function(laneType){
@@ -49,7 +44,9 @@ export default {
     },
     data:function(){
       return {
-        inputChainItems:
+        top: 80,
+        bottom: 50,
+        storeItems:
         [
           {id:"1",title: "零件A",description:"这是零件A",picture:"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",count:99,status:"in_transit"},
           {id:"2",title: "零件B",description:"这是零件B",picture:"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",count:99,status:"in_product"},

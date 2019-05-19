@@ -5,6 +5,8 @@ import erpHome from './views/erpHome.vue'
 import dashboard from './views/dashboard.vue'
 import warehouse from './views/warehouse.vue'
 import goods from './views/goods.vue'
+import purchaseMgr from './views/purchaseMgr.vue'
+import purchaseCreate from './views/purchaseCreate.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -13,7 +15,6 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
       component: Home,
       children: [
         {
@@ -41,6 +42,20 @@ export default new Router({
           path: 'goods',
           name: 'goods',
           component: goods
+        },
+        {
+          // 当 /user/:id/posts 匹配成功
+          // UserPosts 会被渲染在 User 的 <router-view> 中
+          path: 'purchase',
+          name: 'purchase',
+          component: purchaseMgr
+        },
+        {
+          // 当 /user/:id/posts 匹配成功
+          // UserPosts 会被渲染在 User 的 <router-view> 中
+          path: 'purchase_create',
+          name: 'purchase_create',
+          component: purchaseCreate
         },
       ]
     },

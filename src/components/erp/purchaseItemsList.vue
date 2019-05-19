@@ -10,7 +10,9 @@
       <a-button v-else @click="onLoadMore">加载更多</a-button>
     </div>
     <a-list-item slot="renderItem" slot-scope="item">
-      <a slot="actions">编辑</a>
+      <a slot="actions">
+          <a-button shape="circle" icon="shopping-cart" @click="addCartHandler(item)"/>
+      </a>
       <!-- <a slot="actions">more</a> -->
       <a-list-item-meta
         :description="item.description"
@@ -24,11 +26,12 @@
 </template>
 <script>
 import reqwest from 'reqwest'
-
+import EventsName from '../../constants/eventsName.js';
+import eventBus from '../../utils/eventBus.js';
 const url = '/api/goods';
 
 export default {
-  name: "goodsList",
+  name: "purchaseItemsList",
   data () {
     return {
       loading: true,
@@ -44,6 +47,10 @@ export default {
     })
   },
   methods: {
+    addCartHandler(item) {
+      //alert(item.name);
+      eventBus.$emit(EventsName.ADD_PURCHARSE_ORDER_ITEM_TO_CART, item);
+    },
     getData  (callback) {
       reqwest({
         url: url,
@@ -58,7 +65,7 @@ export default {
     onLoadMore () {
       this.loadingMore = true
       this.getData((res) => {
-        this.data = this.data.concat(res.results)
+        this.data = this.data.concat(res)
         this.loadingMore = false
         this.$nextTick(() => {
           window.dispatchEvent(new Event('resize'))

@@ -1,10 +1,10 @@
 <template>
   <div>
     <a-button type="primary" @click="showDrawer">
-      <a-icon type="plus"/>添加
+        <a-icon type="plus"/>添加
     </a-button>
     <a-drawer
-      title="创建一种物品"
+      title="创建一条跟踪记录"
       :width="480"
       @close="onClose"
       :visible="visible"
@@ -13,69 +13,28 @@
       <a-form :form="form" layout="vertical" hideRequiredMark>
         <a-row :gutter="16">
           <a-col :span="24">
-            <a-form-item label="我的产品">
-              <a-switch defaultChecked @change="switchIsOwnHandler"/>
-            </a-form-item>
-          </a-col>
-        </a-row>
-        <a-row :gutter="16">
-          <a-col :span="24">
-            <a-form-item label="名称">
-              <a-input
+            <a-form-item label="跟踪对象">
+              <a-select
                 v-decorator="['name', {
-                  rules: [{ required: true, message: '请输入名称' }]
+                  rules: [{ required: true, message: '请选择跟踪的对象' }]
                 }]"
-                placeholder="请输入名称"
-              />
+                placeholder="请选择跟踪的对象"
+              >
+                <a-select-option value="零件A">零件A</a-select-option>
+                <a-select-option value="零件A">零件B</a-select-option>
+                <a-select-option value="零件A">零件C</a-select-option>
+              </a-select>
             </a-form-item>
           </a-col>
         </a-row>
         <a-row :gutter="16">
           <a-col :span="24">
-            <a-form-item label="编号">
-              <a-input
-                v-decorator="['code', {
-                  rules: [{ required: true, message: '请输入编号' }]
-                }]"
-                style="width: 100%"
-                placeholder="请输入编号"
-              />
+            <a-form-item label="数量">
+              <a-input-number :min="0" :max="999999" v-model="count"/>
             </a-form-item>
           </a-col>
         </a-row>
-        <a-row :gutter="16">
-          <a-col :span="24">
-            <a-form-item label="计量单位">
-              <a-input
-                v-decorator="['code', {
-                  rules: [{ required: true, message: '请输入单位' }]
-                }]"
-                style="width: 100%"
-                placeholder="请输入计量单位"
-              />
-            </a-form-item>
-          </a-col>
-        </a-row>
-        <a-row :gutter="16" v-if="!isOwn">
-          <a-col :span="24">
-            <a-form-item label="供应商">
-              <a-input
-                v-decorator="['provider', {
-                  rules: [{ required: true, message: '请输入供应商' }]
-                }]"
-                style="width: 100%"
-                placeholder="请输入供应商"
-              />
-            </a-form-item>
-          </a-col>
-        </a-row>
-        <a-row :gutter="16">
-          <a-col :span="24">
-            <a-form-item label="图片">
-              <picture-uploader></picture-uploader>
-            </a-form-item>
-          </a-col>
-        </a-row>
+       
         <a-row :gutter="16">
           <a-col :span="24">
             <a-form-item label="标签">
@@ -83,13 +42,30 @@
             </a-form-item>
           </a-col>
         </a-row>
-         <!-- <a-row :gutter="16">
+        <a-row :gutter="16">
+          <a-col :span="24">
+            <a-form-item label="当前状态">
+              <a-select
+                v-decorator="['status', {
+                  rules: [{ required: true, message: '请选择当前状态' }]
+                }]"
+                placeholder="请选择当前状态"
+              >
+                <a-select-option value="运输/生产中">运输/生产中</a-select-option>
+                <a-select-option value="在库">在库</a-select-option>
+                <a-select-option value="出库/运输中">出库/运输中</a-select-option>
+                <a-select-option value="异常">异常</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+        </a-row>
+         <a-row :gutter="16">
           <a-col :span="24">
             <a-form-item label="自定义属性">
               <custom-field></custom-field>
             </a-form-item>
           </a-col>
-         </a-row> -->
+         </a-row>
         <a-row :gutter="16">
           <a-col :span="24">
             <a-form-item label="描述">
@@ -125,20 +101,18 @@
 <script>
 
 import tagsBar from './tagsBar';
-import pictureUploader from './pictureUploader';
-//import customField from './customField';
+import customField from './customField';
 export default {
-  name: "goodsCreate",
+  name: "storeChainItemCreate",
   components:{
     "tags-bar":tagsBar,
-    "picture-uploader": pictureUploader,
-    //"custom-field": customField
+    "custom-field": customField
   },
   data() {
     return {
       form: this.$form.createForm(this),
       visible: false,
-      isOwn: true
+      count: 0
     };
   },
   methods: {
@@ -147,9 +121,6 @@ export default {
     },
     onClose() {
       this.visible = false;
-    },
-    switchIsOwnHandler(){
-      this.isOwn = !this.isOwn;
     }
   }
 };
