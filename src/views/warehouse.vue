@@ -20,19 +20,19 @@
           
           <a-divider />
           <a-row type="flex" justify="start" :gutter="8">
-              <a-col :md="6" :lg="4" v-if="storeMode === 'parts'">
+              <a-col :md="6" :lg="6" v-if="storeMode === 'parts'">
                 <store-lane title="进库运输中" :chainItems="inputChainItems" laneType="inputStore" @addChainItem="addChainItemHandler"></store-lane>
               </a-col>
-              <a-col :md="6" :lg="4" v-if="storeMode === 'products'">
+              <a-col :md="6" :lg="6" v-if="storeMode === 'products'">
                 <store-lane title="生产中" :chainItems="storeChainItems" laneType="inStore" @addChainItem="addChainItemHandler"></store-lane>
               </a-col>
-              <a-col :md="6" :lg="4">
+              <a-col :md="6" :lg="6">
                 <store-lane title="在库" :chainItems="storeChainItems" laneType="inStore" @addChainItem="addChainItemHandler"></store-lane>
               </a-col>
-              <a-col :md="6" :lg="4" v-if="storeMode === 'products'">
+              <a-col :md="6" :lg="6" v-if="storeMode === 'products'">
                 <store-lane title="出库运输中" :chainItems="outputChainItems" laneType="outputStore" @addChainItem="addChainItemHandler"></store-lane>
               </a-col>
-              <a-col :md="6" :lg="4" v-if="storeMode === 'parts'">
+              <a-col :md="6" :lg="6" v-if="storeMode === 'parts'">
                 <store-lane title="组装中" :chainItems="exceptionChainItems" laneType="cancelStore" @addChainItem="addChainItemHandler"></store-lane>
               </a-col>
           </a-row>

@@ -2,16 +2,20 @@
   <a-card hoverable :bordered="false" :style="{marginBottom:'5px',borderLeftStyle:'solid',bordeLeftWeight:'4px',borderLeftColor: statusColor}"
   draggable="true">
     
-    <img style="width: 90%"
+    
+    <!-- <a-divider /> -->
+    <a-row :gutter="8">
+      <a-col :span="8">
+        <img style="width: 100%"
           :src="chainItem.picture"
         />
-    <a-divider />
-    <a-row>
-      <a-col :span="24">
+      </a-col>
+      <a-col :span="16">
         <span>{{chainItem.title}}</span>
+        <h3>{{'x' + chainItem.count + ' ' + chainItem.unit}}</h3>
       </a-col>
     </a-row>
-    <h5>{{'x' + chainItem.count + ' ' + chainItem.unit}}</h5>
+    
     <!-- <a-icon type="wechat" style="color:green;fontSize:20px"/> -->
     <!-- <a-icon type="share-alt" style="color:green;fontSize:20px"/> -->
   </a-card>
