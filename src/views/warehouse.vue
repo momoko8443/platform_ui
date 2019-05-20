@@ -5,20 +5,35 @@
           <tags-wall></tags-wall>
       </a-col>
       <a-col :span="20">
-          <store-chain-item-create></store-chain-item-create>
+          <a-row type="flex" justify="center">
+            <a-col :span="20">
+              <store-chain-item-create></store-chain-item-create>
+            </a-col>
+            <a-col :span="4">
+              <a-select defaultValue="零配件库存"  style="float:right;width:100%" @change="storeTypeChangeHandler">
+                <a-select-option value="零配件库存">零配件库存</a-select-option>
+                <a-select-option value="成品库存">成品库存</a-select-option>
+                <!-- <a-select-option value="添加+">添加新品种+</a-select-option> -->
+              </a-select>
+            </a-col>
+          </a-row>
+          
           <a-divider />
           <a-row type="flex" justify="start" :gutter="8">
-              <a-col :md="6" :lg="4">
-                <store-lane title="运输中/生产中" :chainItems="inputChainItems" laneType="inputStore" @addChainItem="addChainItemHandler"></store-lane>
+              <a-col :md="6" :lg="4" v-if="storeMode === 'parts'">
+                <store-lane title="进库运输中" :chainItems="inputChainItems" laneType="inputStore" @addChainItem="addChainItemHandler"></store-lane>
+              </a-col>
+              <a-col :md="6" :lg="4" v-if="storeMode === 'products'">
+                <store-lane title="生产中" :chainItems="storeChainItems" laneType="inStore" @addChainItem="addChainItemHandler"></store-lane>
               </a-col>
               <a-col :md="6" :lg="4">
                 <store-lane title="在库" :chainItems="storeChainItems" laneType="inStore" @addChainItem="addChainItemHandler"></store-lane>
               </a-col>
-              <a-col :md="6" :lg="4">
-                <store-lane title="出库中/运输中" :chainItems="outputChainItems" laneType="outputStore" @addChainItem="addChainItemHandler"></store-lane>
+              <a-col :md="6" :lg="4" v-if="storeMode === 'products'">
+                <store-lane title="出库运输中" :chainItems="outputChainItems" laneType="outputStore" @addChainItem="addChainItemHandler"></store-lane>
               </a-col>
-              <a-col :md="6" :lg="4" >
-                <store-lane title="取消/异常" :chainItems="exceptionChainItems" laneType="cancelStore" @addChainItem="addChainItemHandler"></store-lane>
+              <a-col :md="6" :lg="4" v-if="storeMode === 'parts'">
+                <store-lane title="组装中" :chainItems="exceptionChainItems" laneType="cancelStore" @addChainItem="addChainItemHandler"></store-lane>
               </a-col>
           </a-row>
       </a-col>
@@ -38,10 +53,18 @@ export default {
     methods: {
       addChainItemHandler: function(laneType){
         alert(laneType);
+      },
+      storeTypeChangeHandler: function(value){
+        if(value === "零配件库存"){
+          this.storeMode = "parts";
+        }else{
+          this.storeMode = "products";
+        }
       }
     },
     data:function(){
       return {
+        storeMode: "parts",
         inputChainItems:
         [
           {id:"1",title: "Intel i7 8700k",description:"【8代酷睿,精彩芯体验】LGA1151芯片接口,六核六线程,睿频可至4.3GHz!",picture:"https://img14.360buyimg.com/n0/jfs/t18448/200/2532654839/268503/b46a717e/5afe4d0cN10f96d55.jpg",count:9,unit:'件',status:"in_transit"},
