@@ -1,18 +1,26 @@
 <template>
   <a-card hoverable :bordered="false" :style="{marginBottom:'5px',borderLeftStyle:'solid',bordeLeftWeight:'4px',borderLeftColor: statusColor}"
   draggable="true">
-    
-    <img style="width: 90%"
-          :src="chainItem.picture"
-        />
+    <span>{{chainItem.title}}</span>
     <a-divider />
-    <a-row>
-      <a-col :span="24">
-        <span>{{chainItem.title}}</span>
+    <a-row :gutter="8" v-for="item in chainItem.shoppingList" :key="item.id">
+      <a-col :span="8">
+        <img style="width: 80%"
+          :src="item.picture"
+        />
+      </a-col>
+      <a-col :span="16">
+        <a-row>
+          <a-col :span="14">
+            <h5>{{item.title}}</h5>
+          </a-col>
+          <a-col :span="10">
+            <h5>{{'x' + item.count + ' ' + item.unit}}</h5>
+          </a-col>
+        </a-row>
       </a-col>
     </a-row>
-    <h5>{{'x' + chainItem.count + ' ' + chainItem.unit}}</h5>
-    <!-- <a-icon type="wechat" style="color:green;fontSize:20px"/> -->
+    <a-icon type="wechat" style="color:green;fontSize:20px"/>
     <!-- <a-icon type="share-alt" style="color:green;fontSize:20px"/> -->
   </a-card>
 </template>

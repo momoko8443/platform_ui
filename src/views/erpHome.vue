@@ -13,10 +13,10 @@ export default {
     data: function(){
         return {
             usersApps : [
-                {title:"始", desc: "元器件录入",path:"goods"},
-                {title:"存", desc: "库存查看",path:"warehouse"},
-                {title:"进", desc: "进货链",path:"purchase"},
-                {title:"销", desc: "销售链",path:"home"}
+                {title:"初始", desc: "原始数据录入",path:"goods",color: "#69c0ff"},
+                {title:"库存", desc: "库存管理",path:"warehouse",color: "#fadb14"},
+                {title:"进货", desc: "进货链",path:"purchase",color: "#a0d911"},
+                {title:"销售", desc: "销售链",path:"sale",color: "#b37feb"}
                 ]
         };
     }

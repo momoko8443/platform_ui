@@ -7,6 +7,8 @@ import warehouse from './views/warehouse.vue'
 import goods from './views/goods.vue'
 import purchaseMgr from './views/purchaseMgr.vue'
 import purchaseCreate from './views/purchaseCreate.vue'
+import saleOrderMgr from './views/saleOrderMgr.vue'
+import saleOrderCreate from './views/saleOrderCreate.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -28,34 +30,79 @@ export default new Router({
           path:'erp',
           name:'erp',
           component: erpHome,
+          meta: {
+            nav:[
+              {name:"物", path:"erp"}
+            ]
+          }
         },
         {
-          // 当 /user/:id/posts 匹配成功
-          // UserPosts 会被渲染在 User 的 <router-view> 中
           path: 'warehouse',
           name: 'warehouse',
-          component: warehouse
+          component: warehouse,
+          meta: {
+            nav:[
+              {name:"物", path:"erp"},
+              {name:"库存", path:"warehouse"}
+            ]
+          }
         },
         {
-          // 当 /user/:id/posts 匹配成功
-          // UserPosts 会被渲染在 User 的 <router-view> 中
           path: 'goods',
           name: 'goods',
-          component: goods
+          component: goods,
+          meta: {
+            nav:[
+              {name:"物", path:"erp"},
+              {name:"初始", path:"goods"}
+            ]
+          }
         },
         {
-          // 当 /user/:id/posts 匹配成功
-          // UserPosts 会被渲染在 User 的 <router-view> 中
           path: 'purchase',
           name: 'purchase',
-          component: purchaseMgr
+          component: purchaseMgr,
+          meta: {
+            nav:[
+              {name:"物", path:"erp"},
+              {name:"进货", path:"purchase"}
+            ]
+          }
         },
         {
-          // 当 /user/:id/posts 匹配成功
-          // UserPosts 会被渲染在 User 的 <router-view> 中
           path: 'purchase_create',
           name: 'purchase_create',
-          component: purchaseCreate
+          component: purchaseCreate,
+          meta: {
+            nav:[
+              {name:"物", path:"erp"},
+              {name:"进货", path:"purchase"},
+              {name:"创建进货单", path:"purchase_create"}
+            ]
+          }
+        },
+        {
+          path: 'sale',
+          name: 'sale',
+          component: saleOrderMgr,
+          meta: {
+            nav:[
+              {name:"物", path:"erp"},
+              {name:"销售", path:"sale"},
+            ]
+          }
+        },
+        {
+          path: 'sale_create',
+          name: 'sale_create',
+          component: saleOrderCreate,
+          meta: {
+            nav:[
+              {name:"物", path:"erp"},
+              {name:"销售", path:"sale"},
+              {name:"创建销售单", path:"sale_create"}
+            ]
+          }
         },
       ]
     },

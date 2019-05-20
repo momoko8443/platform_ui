@@ -7,35 +7,34 @@
       <a-col :span="20">
           <a-row type="flex" justify="start" :gutter="8">
              <a-col :span="8">
-               <a-button type="primary" @click="addPurchaseOrder">
-                    <a-icon type="plus"/>添加进货单
+               <a-button type="primary" @click="addSaleOrder">
+                    <a-icon type="plus"/>创建销售单
                 </a-button>
             </a-col>
           </a-row>
           <a-divider />
           <a-row type="flex" justify="start" :gutter="8">
               <a-col :md="6" :lg="4">
-                <order-lane title="进货/询价中" :chainItems="inputChainItems" laneType="inputStore" @addChainItem="addChainItemHandler"></order-lane>
+                <order-lane title="新的订单" :chainItems="inputChainItems" laneType="inputStore" @addChainItem="addChainItemHandler"></order-lane>
               </a-col>
               <!-- <a-col :md="6" :lg="4">
                 <store-lane title="询价中" :chainItems="storeChainItems" laneType="inStore" @addChainItem="addChainItemHandler"></store-lane>
               </a-col> -->
               <a-col :md="6" :lg="4">
-                <order-lane title="供应商已确认" :chainItems="storeChainItems" laneType="outputStore" @addChainItem="addChainItemHandler"></order-lane>
+                <order-lane title="已确认" :chainItems="outputChainItems" laneType="outputStore" @addChainItem="addChainItemHandler"></order-lane>
               </a-col>
               <a-col :md="6" :lg="4" >
-                <order-lane title="供应商生产中" :chainItems="exceptionChainItems" laneType="cancelStore" @addChainItem="addChainItemHandler"></order-lane>
+                <order-lane title="生产中" :chainItems="storeChainItems" laneType="cancelStore" @addChainItem="addChainItemHandler"></order-lane>
               </a-col>
               <a-col :md="6" :lg="4" >
-                <order-lane title="运输中" :chainItems="outputChainItems" laneType="cancelStore" @addChainItem="addChainItemHandler"></order-lane>
+                <order-lane title="已入库" :chainItems="outputChainItems" laneType="cancelStore" @addChainItem="addChainItemHandler"></order-lane>
               </a-col>
               <a-col :md="6" :lg="4" >
-                <order-lane title="已入库" :chainItems="storeChainItems" laneType="cancelStore" @addChainItem="addChainItemHandler"></order-lane>
+                <order-lane title="出库/运输中" :chainItems="outputChainItems" laneType="cancelStore" @addChainItem="addChainItemHandler"></order-lane>
               </a-col>
               <a-col :md="6" :lg="4" >
-                <order-lane title="完成支付" :chainItems="inputChainItems" laneType="cancelStore" @addChainItem="addChainItemHandler"></order-lane>
+                <order-lane title="订单完成" :chainItems="storeChainItems" laneType="cancelStore" @addChainItem="addChainItemHandler"></order-lane>
               </a-col>
-              
           </a-row>
       </a-col>
     </a-row>
@@ -44,7 +43,7 @@
 import tagsWall from "../components/erp/tagsWall";
 import orderLane from "../components/erp/orderLane";
 export default {
-    name: "purchaseMgr",
+    name: "saleOrderMgr",
     components: {
         "tags-wall": tagsWall,
         "order-lane": orderLane,
@@ -53,8 +52,8 @@ export default {
       addChainItemHandler: function(laneType){
         alert(laneType);
       },
-      addPurchaseOrder: function(){
-          this.$router.push({name: "purchase_create"});
+      addSaleOrder: function(){
+          this.$router.push({name: "sale_create"});
       }
     },
     data:function(){
@@ -63,7 +62,7 @@ export default {
         [
           {
             id: "1",
-            title:"进货单01",
+            title:"销售单01",
             status:"in_transit",
             shoppingList:[
               {id:"1",title: "Intel i7 8700k",description:"【8代酷睿,精彩芯体验】LGA1151芯片接口,六核六线程,睿频可至4.3GHz!",picture:"https://img14.360buyimg.com/n0/jfs/t18448/200/2532654839/268503/b46a717e/5afe4d0cN10f96d55.jpg",count:9,unit:'件'},
@@ -76,7 +75,7 @@ export default {
         storeChainItems: [
           {
             id: "1",
-            title:"进货单02",
+            title:"销售单02",
             status:"in_product",
             shoppingList:[
               {id:"1",title: "Intel i7 8700k",description:"【8代酷睿,精彩芯体验】LGA1151芯片接口,六核六线程,睿频可至4.3GHz!",picture:"https://img14.360buyimg.com/n0/jfs/t18448/200/2532654839/268503/b46a717e/5afe4d0cN10f96d55.jpg",count:9,unit:'件'},
@@ -86,7 +85,7 @@ export default {
           },
           {
             id: "2",
-            title:"进货单05",
+            title:"销售单05",
             status:"in_transit",
             shoppingList:[
               {id:"1",title: "Intel i7 8700k",description:"【8代酷睿,精彩芯体验】LGA1151芯片接口,六核六线程,睿频可至4.3GHz!",picture:"https://img14.360buyimg.com/n0/jfs/t18448/200/2532654839/268503/b46a717e/5afe4d0cN10f96d55.jpg",count:9,unit:'件'},
@@ -96,7 +95,7 @@ export default {
         outputChainItems:[
           {
             id: "1",
-            title:"进货单03",
+            title:"销售单03",
             status:"in_transit",
             shoppingList:[
               {id:"1",title: "Intel i7 8700k",description:"【8代酷睿,精彩芯体验】LGA1151芯片接口,六核六线程,睿频可至4.3GHz!",picture:"https://img14.360buyimg.com/n0/jfs/t18448/200/2532654839/268503/b46a717e/5afe4d0cN10f96d55.jpg",count:9,unit:'件'},
@@ -106,7 +105,7 @@ export default {
         exceptionChainItems:[
           {
             id: "1",
-            title:"进货单04",
+            title:"销售单04",
             status:"in_product",
             shoppingList:[
               {id:"1",title: "Intel i7 8700k",description:"【8代酷睿,精彩芯体验】LGA1151芯片接口,六核六线程,睿频可至4.3GHz!",picture:"https://img14.360buyimg.com/n0/jfs/t18448/200/2532654839/268503/b46a717e/5afe4d0cN10f96d55.jpg",count:9,unit:'件'},

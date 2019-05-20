@@ -17,7 +17,7 @@
              </a-col>
              <a-col :md="12" :xl="8">
                <a-affix :offsetTop="this.top" >
-                <purchase-order></purchase-order>
+                <sale-order></sale-order>
                </a-affix>
              </a-col>
            </a-row>
@@ -28,13 +28,13 @@
 <script>
 import tagsWall from "../components/erp/tagsWall";
 import purchaseItemsList from "../components/erp/purchaseItemsList";
-import purchaseOrder from "../components/erp/purchaseOrder";
+import saleOrder from "../components/erp/saleOrder";
 export default {
     name: "purchaseMgr",
     components: {
         "tags-wall": tagsWall,
         "purchase-items-list":purchaseItemsList,
-        "purchase-order": purchaseOrder
+        "sale-order": saleOrder
 
     },
     methods: {
@@ -46,7 +46,7 @@ export default {
       return {
         top: 80,
         bottom: 50,
-      }
+      };
     }
 }
 </script>

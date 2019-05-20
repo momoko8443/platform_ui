@@ -28,7 +28,7 @@ export default {
         uid: '-1',
         name: 'xxx.png',
         status: 'done',
-        url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+        url: 'https://img14.360buyimg.com/n0/jfs/t18118/5/942017929/1604160/a1cb6216/5ab1f623N58030a3c.jpg',
       }],
     }
   },

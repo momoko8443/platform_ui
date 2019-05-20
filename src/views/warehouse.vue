@@ -5,14 +5,7 @@
           <tags-wall></tags-wall>
       </a-col>
       <a-col :span="20">
-          <a-row type="flex" justify="end" :gutter="8">
-            <a-col :span="16">
-              
-            </a-col>
-             <a-col :span="8">
-              <store-chain-item-create></store-chain-item-create>
-            </a-col>
-          </a-row>
+          <store-chain-item-create></store-chain-item-create>
           <a-divider />
           <a-row type="flex" justify="start" :gutter="8">
               <a-col :md="6" :lg="4">
@@ -51,34 +44,20 @@ export default {
       return {
         inputChainItems:
         [
-          {id:"1",title: "零件A",description:"这是零件A",picture:"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",count:99,status:"in_transit"},
-          {id:"2",title: "零件B",description:"这是零件B",picture:"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",count:99,status:"in_product"},
-          {id:"3",title: "零件C",description:"这是零件C",picture:"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",count:99,status:"in_transit"},
-          {id:"4",title: "零件A",description:"这是零件A",picture:"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",count:99,status:"in_transit"},
-          {id:"5",title: "零件B",description:"这是零件B",picture:"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",count:99,status:"in_product"},
-          {id:"6",title: "零件C",description:"这是零件C",picture:"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",count:99,status:"in_transit"},
-          {id:"7",title: "零件A",description:"这是零件A",picture:"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",count:99,status:"in_transit"},
-          {id:"8",title: "零件B",description:"这是零件B",picture:"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",count:99,status:"in_product"},
-          {id:"9",title: "零件C",description:"这是零件C",picture:"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",count:99,status:"in_transit"},
-          
+          {id:"1",title: "Intel i7 8700k",description:"【8代酷睿,精彩芯体验】LGA1151芯片接口,六核六线程,睿频可至4.3GHz!",picture:"https://img14.360buyimg.com/n0/jfs/t18448/200/2532654839/268503/b46a717e/5afe4d0cN10f96d55.jpg",count:9,unit:'件',status:"in_transit"},
+          {id:"2",title: "Intel i5 8600k",description:"【8代酷睿,精彩芯体验】LGA1151芯片接口,六核六线程,睿频可至4.3GHz!",picture:"https://img14.360buyimg.com/n0/jfs/t18118/5/942017929/1604160/a1cb6216/5ab1f623N58030a3c.jpg",count:7,unit:'件',status:"in_product"},
+          {id:"3",title: "Intel i5 8600k",description:"【8代酷睿,精彩芯体验】LGA1151芯片接口,六核六线程,睿频可至4.3GHz!",picture:"https://img14.360buyimg.com/n0/jfs/t18118/5/942017929/1604160/a1cb6216/5ab1f623N58030a3c.jpg",count:7,unit:'件',status:"in_product"},      
         ],
         storeChainItems: [
-          {id:"1",title: "零件A",description:"这是零件A",picture:"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",count:99,status:"in_transit"},
-          {id:"2",title: "零件B",description:"这是零件B",picture:"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",count:99,status:"in_product"},
-          {id:"3",title: "零件C",description:"这是零件C",picture:"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",count:99,status:"in_transit"},
- 
+          {id:"1",title: "Intel i7 8700k",description:"【8代酷睿,精彩芯体验】LGA1151芯片接口,六核六线程,睿频可至4.3GHz!",picture:"https://img14.360buyimg.com/n0/jfs/t18448/200/2532654839/268503/b46a717e/5afe4d0cN10f96d55.jpg",count:9,unit:'件',status:"in_transit"},
+          {id:"2",title: "Intel i5 8600k",description:"【8代酷睿,精彩芯体验】LGA1151芯片接口,六核六线程,睿频可至4.3GHz!",picture:"https://img14.360buyimg.com/n0/jfs/t18118/5/942017929/1604160/a1cb6216/5ab1f623N58030a3c.jpg",count:7,unit:'件',status:"in_product"},
+
         ],
         outputChainItems:[
-          {id:"1",title: "零件A",description:"这是零件A",picture:"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",count:99,status:"in_transit"},
-          {id:"2",title: "零件B",description:"这是零件B",picture:"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",count:99,status:"in_product"},
-          {id:"3",title: "零件C",description:"这是零件C",picture:"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",count:99,status:"in_transit"},
- 
+           {id:"1",title: "Intel i7 8700k",description:"【8代酷睿,精彩芯体验】LGA1151芯片接口,六核六线程,睿频可至4.3GHz!",picture:"https://img14.360buyimg.com/n0/jfs/t18448/200/2532654839/268503/b46a717e/5afe4d0cN10f96d55.jpg",count:9,unit:'件',status:"in_transit"},
         ],
         exceptionChainItems:[
-          {id:"1",title: "零件A",description:"这是零件A",picture:"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",count:99,status:"in_transit"},
-          {id:"2",title: "零件B",description:"这是零件B",picture:"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",count:99,status:"in_product"},
-          {id:"3",title: "零件C",description:"这是零件C",picture:"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",count:99,status:"in_transit"},
- 
+          {id:"1",title: "Intel i7 8700k",description:"【8代酷睿,精彩芯体验】LGA1151芯片接口,六核六线程,睿频可至4.3GHz!",picture:"https://img14.360buyimg.com/n0/jfs/t18448/200/2532654839/268503/b46a717e/5afe4d0cN10f96d55.jpg",count:9,unit:'件',status:"in_product"},
         ]
       };
     }

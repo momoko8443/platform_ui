@@ -4,13 +4,15 @@
           <h4>分类标签</h4>
           <tags-wall></tags-wall>
       </a-col>
-      <a-col :span="12" :pull="1">
-          <div style="text-align:right"> 
-              <goods-create></goods-create>
-          </div>
+      <a-col :span="14" >
+          <goods-create></goods-create>
+          <a-divider />
           <div>
               <goods-list></goods-list>
           </div>
+      </a-col>
+      <a-col :span="6" >
+
       </a-col>
     </a-row>
 </template>

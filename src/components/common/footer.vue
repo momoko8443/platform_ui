@@ -1,6 +1,6 @@
 <template>
     <a-layout-footer :style="{ textAlign: 'center' }">
-      Ant Design ©2018 Created by Ant UED
+      Benyun EOP ©2019
     </a-layout-footer>
 </template>
 <script>

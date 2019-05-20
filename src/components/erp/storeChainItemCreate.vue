@@ -4,7 +4,7 @@
         <a-icon type="plus"/>添加
     </a-button>
     <a-drawer
-      title="创建一条跟踪记录"
+      title="创建一条库存记录"
       :width="480"
       @close="onClose"
       :visible="visible"
@@ -13,16 +13,16 @@
       <a-form :form="form" layout="vertical" hideRequiredMark>
         <a-row :gutter="16">
           <a-col :span="24">
-            <a-form-item label="跟踪对象">
+            <a-form-item label="库存品">
               <a-select
                 v-decorator="['name', {
-                  rules: [{ required: true, message: '请选择跟踪的对象' }]
+                  rules: [{ required: true, message: '请选择一种库存品' }]
                 }]"
-                placeholder="请选择跟踪的对象"
+                placeholder="请选择一种库存品"
               >
-                <a-select-option value="零件A">零件A</a-select-option>
-                <a-select-option value="零件A">零件B</a-select-option>
-                <a-select-option value="零件A">零件C</a-select-option>
+                <a-select-option value="Intel i7 8700k">Intel i7 8700k</a-select-option>
+                <a-select-option value="Intel i5 8600k">Intel i5 8600k</a-select-option>
+                <a-select-option value="添加+">添加新品种+</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>

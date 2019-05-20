@@ -1,22 +1,27 @@
 <template>
   <div style="height:600px">
     <div style="height:30px;">
-      <span style="margin-right:5px;float:right">采购单</span>
+      <span style="margin-right:5px;float:right">销售清单</span>
       <!-- <a-button type="dashed" size="small" icon="plus" shape="circle" style="float:right;" @click="addChainItemHandler"/> -->
     </div>
     
     <div>
       <a-form >
-        <a-form-item label="物品">
+        <a-form-item
+          label="采购方"
+        >
+          <a-select placeholder="请选择一个采购方" >
+            <a-select-option value="IBM">IBM</a-select-option>
+            <a-select-option value="HP">HP</a-select-option>
+            <a-select-option value="Facebook">Facebook</a-select-option>
+            <a-select-option value="Google">Google</a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item label="">
             <div style="background:#e8e8e8; height:300px;padding:5px;overflow-y:auto;overflow-x:hidden">
                 <purchase-order-item v-for="item in orderItems" :orderItem="item" :key="item.id" @removeCartItem="removeCartItemHandler"></purchase-order-item>
             <!-- <store-chain-item v-for="item in chainItems" :chainItem="item" :key="item.id"></store-chain-item> -->
             </div>
-        </a-form-item>
-        <a-form-item
-          label="期望到货日期"
-        >
-          <a-date-picker placeholder="请选择一个日期" />
         </a-form-item>
         <a-form-item>
           <a-button type="primary">创建</a-button>
@@ -41,7 +46,7 @@ export default {
       this.orderItems.push(cartItem);
     })
   },
-  name: "purchaseOrder",
+  name: "saleOrder",
   data() {
       return {
           labelCol: {

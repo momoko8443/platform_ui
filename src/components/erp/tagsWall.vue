@@ -1,12 +1,13 @@
 <template>
     <div>
-        <a-tag color="pink">pink</a-tag>
-        <a-tag color="red">red</a-tag>
-        <a-tag color="orange">orange</a-tag>
-        <a-tag color="green">green</a-tag>
-        <a-tag color="cyan">cyan</a-tag>
-        <a-tag color="blue">blue</a-tag>
-        <a-tag color="purple">purple</a-tag>
+        <a-tag color="pink">Intel</a-tag>
+        <a-tag color="red">CPU
+        </a-tag>
+        <a-tag color="orange">i7</a-tag>
+        <a-tag color="green">AMD</a-tag>
+        <a-tag color="cyan">NVIDIA</a-tag>
+        <a-tag color="blue">West Digital</a-tag>
+        <a-tag color="purple">memory</a-tag>
     </div>
 </template>
 <script>

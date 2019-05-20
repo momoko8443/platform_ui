@@ -1,6 +1,12 @@
 <template>
   <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
-      <div class="logo" />
+      <div class="logo" >
+        <span style="font-size: 18px;
+    position: relative;
+    top: -18px;
+    left: 8px;
+    color: whitesmoke;">Benyun EOP</span>
+      </div>
       <a-menu
         theme="dark"
         mode="horizontal"

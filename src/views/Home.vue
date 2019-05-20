@@ -2,9 +2,11 @@
   <a-layout id="components-layout-demo-fixed">
     <benyun-header></benyun-header>
     <a-layout-content :style="{ padding: '50px 50px', marginTop: '64px' }">
-      <!-- <benyun-navigator></benyun-navigator> -->
+      <benyun-navigator></benyun-navigator>
       <!-- <benyun-dashboard></benyun-dashboard> -->
-      <router-view></router-view>
+      <transition name="fade" mode="out-in">
+        <router-view></router-view>
+      </transition>
     </a-layout-content>
     <benyun-footer></benyun-footer>
   </a-layout>
@@ -24,7 +26,7 @@
 
 import header from "../components/common/header";
 import footer from "../components/common/footer";
-//import navigator from "../components/common/navigator";
+import navigator from "../components/common/navigator";
 // import dashboard from "../components/common/dashboard";
 
 export default {
@@ -32,7 +34,7 @@ export default {
   components: {
     "benyun-header":header,
     "benyun-footer": footer,
-    //"benyun-navigator": navigator,
+    "benyun-navigator": navigator,
     //"benyun-dashboard": dashboard
   }
 }
