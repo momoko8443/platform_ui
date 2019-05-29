@@ -1,5 +1,5 @@
 module.exports = {
-    outputDir: "../eop_web_server/web/dist",
+    outputDir: "../eop_web_server/private",
     devServer: {
         proxy: {
             "/api":{

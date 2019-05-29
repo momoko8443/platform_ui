@@ -23,23 +23,37 @@
           <router-link to="/goods">物品</router-link>
         </a-menu-item> -->
         <a-menu-item key="4" style="float: right">
-          <router-link to="/login">
-            <a-button type="primary">登录</a-button>
-          </router-link>
+          <!-- <router-link to="/login"> -->
+            <a-button type="primary" @click="doLogin">登录</a-button>
+          <!-- </router-link> -->
         </a-menu-item>
       </a-menu>
       
     </a-layout-header>
 </template>
 <style>
-
-
-
-
 </style>
 <script>
 export default {
-  name: 'benyun-header'
+  name: 'benyun-header',
+  data:function(){
+    let client_id = "We@lthW@yClientId";
+    let redirect_uri = "http://localhost:3000/benyun/oauth/github/callback";
+    let url =
+      "http://localhost:8081/oauth/authorize?response_type=code&scope=user_info&state=benyun&client_id=" +
+      client_id +
+      "&redirect_uri=" +
+      redirect_uri;
+    return {
+      loginUrl: url
+    }
+  },
+  methods:{
+    doLogin: function(){
+      //alert(this.loginUrl);
+      window.location.href = this.loginUrl;
+    }
+  }
 }
 </script>
 
