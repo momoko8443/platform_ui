@@ -3,6 +3,9 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import erpHome from './views/erpHome.vue'
 import dashboard from './views/dashboard.vue'
+import idmHome from './views/idmHome'
+import memberMgr from './views/idm/memberMgr.vue'
+import roleMgr from './views/idm/roleMgr.vue'
 import warehouse from './views/warehouse.vue'
 import goods from './views/goods.vue'
 import purchaseMgr from './views/purchaseMgr.vue'
@@ -33,6 +36,38 @@ export default new Router({
           meta: {
             nav:[
               {name:"物", path:"erp"}
+            ]
+          }
+        },
+        {
+          path:'idm',
+          name:'idm',
+          component: idmHome,
+          meta: {
+            nav:[
+              {name:"物", path:"idm"}
+            ]
+          }
+        },
+        {
+          path:'member',
+          name:'member',
+          component: memberMgr,
+          meta: {
+            nav:[
+              {name:"人", path:"idm"},
+              {name:"成员", path:"member"}
+            ]
+          }
+        },
+        {
+          path:'role',
+          name:'role',
+          component: roleMgr,
+          meta: {
+            nav:[
+              {name:"人", path:"idm"},
+              {name:"角色", path:"role"}
             ]
           }
         },
@@ -106,18 +141,5 @@ export default new Router({
         },
       ]
     },
-    {
-      path: '/login',
-      name: 'login',
-      component: () => import(/* webpackChunkName: "about" */ './views/login.vue')
-    },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
-    }
   ]
 })
