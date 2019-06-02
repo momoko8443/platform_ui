@@ -10,7 +10,7 @@ router.beforeEach((to, from, next) => {
   if(to.path === "/erp"){
     window.location.href = "http://47.111.18.121:5008";
   }
-  console.log(to);
+  //console.log(to);
   next();
 });
 Vue.use(Antd)

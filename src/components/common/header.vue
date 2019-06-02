@@ -24,8 +24,9 @@
         </a-menu-item> -->
         <a-menu-item key="4" style="float: right">
           <!-- <router-link to="/login"> -->
-            <a-button type="primary" @click="doLogin">登录</a-button>
+            <!-- <a-button type="primary" @click="doLogin">登录</a-button> -->
           <!-- </router-link> -->
+            <a-avatar style="backgroundColor:#87d068">{{userProfile.displayName}}</a-avatar>
         </a-menu-item>
       </a-menu>
       
@@ -34,24 +35,30 @@
 <style>
 </style>
 <script>
+import reqwest from 'reqwest'
 export default {
   name: 'benyun-header',
   data:function(){
-    let client_id = "We@lthW@yClientId";
-    let redirect_uri = "http://localhost:3000/benyun/oauth/github/callback";
-    let url =
-      "http://localhost:8081/oauth/authorize?response_type=code&scope=user_info&state=benyun&client_id=" +
-      client_id +
-      "&redirect_uri=" +
-      redirect_uri;
     return {
-      loginUrl: url
+        userProfile:{}
     }
   },
+  created(){
+      this.getUserProfile((profile)=>{
+        this.userProfile = profile;
+      });
+  },
   methods:{
-    doLogin: function(){
-      //alert(this.loginUrl);
-      window.location.href = this.loginUrl;
+    getUserProfile(callback){
+      reqwest({
+        url: '/benyun/api/user',
+        type: 'json',
+        method: 'get',
+        contentType: 'application/json',
+        success: (res) => {
+          callback(res)
+        },
+      })
     }
   }
 }
