@@ -102,9 +102,6 @@ export default {
         })
       })
     },
-    addRole () {
-
-    },
     editHandler() {
       this.visible = true;
     },
