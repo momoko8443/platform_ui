@@ -16,6 +16,10 @@ export default {
             navItems:[]
         }
     },
+    created(){
+        //console.log(this.$route);
+        this.navItems = this.$route.meta.nav;
+    },
     watch: {
         '$route'(to) {
             this.navItems = to.meta.nav;
