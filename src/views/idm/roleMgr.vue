@@ -39,10 +39,13 @@
           <a slot="actions" @click="editHandler">编辑</a>
           <a slot="actions">移除</a>
           <!-- <a slot="actions">more</a> -->
-          <a-list-item-meta>
-            <a slot="title" href="https://vue.ant.design/">{{item.name}}</a>
-            <a-avatar slot="avatar" v-bind:src="item.avatar"/>
+          <a-list-item-meta >
+            <a slot="title" :href="item.href">{{item.name}}</a>
+            <a-avatar slot="avatar" style="backgroundColor:#87d068">{{item.name.substr(0,2)}}</a-avatar>
           </a-list-item-meta>
+          
+          <!-- <a-avatar style="backgroundColor:#87d068">{{item.name.substr(0,2)}}</a-avatar> -->
+          <!-- <h5>{{item.name}}</h5> -->
           <!-- <div>content</div> -->
         </a-list-item>
       </a-list>
@@ -55,7 +58,7 @@
 import reqwest from 'reqwest'
 import roleEditForm from '../../components/idm/roleEditForm'
 
-const url = '/benyun/api/members';
+const url = '/benyun/api/roles';
 
 export default {
   name: "roleMgr",

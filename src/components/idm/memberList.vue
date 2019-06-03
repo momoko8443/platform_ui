@@ -10,6 +10,7 @@
       <a-button v-else @click="onLoadMore">加载更多</a-button>
     </div>
     <a-list-item slot="renderItem" slot-scope="item">
+      <a slot="actions">重命名</a>
       <a slot="actions">移除</a>
       <!-- <a slot="actions">more</a> -->
       <a-list-item-meta

@@ -1,7 +1,7 @@
 <template>
     <a-row type="flex" justify="center" :gutter="50">
       <a-col :span="4">
-          <h4>分类标签</h4>
+          <h4>角色列表</h4>
           <tags-wall></tags-wall>
       </a-col>
       <a-col :span="16">
