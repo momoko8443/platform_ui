@@ -36,8 +36,8 @@
             </a-card>
             <a-card title="权限分配" :style="{ marginTop: '16px' }">
                 <div>
-                    <a-select defaultValue="ERP" style="width: 120px">
-                        <a-select-option value="erp">ERP</a-select-option>
+                    <a-select :defaultValue="5" style="width: 120px">
+                        <a-select-option v-for="app in applications" :key="app.id">{{app.appName}}</a-select-option>
                     </a-select>
                     <br>
                     <br>
@@ -83,8 +83,12 @@
     </div>
 </template>
 <script>
+
+import reqwest from 'reqwest';
 const plainOptions = ["Apple", "Pear", "Orange"];
 const defaultCheckedList = ["Apple", "Orange"];
+const url = '/benyun/api/members';
+const url2 = '/benyun/api/applications';
 const treeData = [
     {
         title: "0-0",
@@ -134,6 +138,26 @@ export default {
     props: {
         visible: Boolean
     },
+    mounted () {
+        this.getAllMembers((result)=>{
+            //console.log(result.records);
+            this.members = result.records;
+            let membersOpions = [];
+            for (let i = 0; i < this.members.length; i++) {
+                const member = this.members[i];
+                membersOpions.push({label: member.userName,value:member.id});    
+            }
+            this.plainOptions = membersOpions;
+        });
+        this.getAllApplications((result)=>{
+            this.applications = result; 
+            let defaultAppId = this.applications[0].id;
+            this.getAllPermissionByApp(defaultAppId, (result)=>{
+                result = JSON.parse(JSON.stringify(result).replace(new RegExp('name','g'), 'title'));
+                this.treeData = result;
+            });
+        });
+    },
     data() {
         return {
             form: this.$form.createForm(this),
@@ -147,6 +171,8 @@ export default {
             autoExpandParent: true,
             checkedKeys: ['0-0-0'],
             selectedKeys: [],
+            members: [],
+            applications: []
         };
     },
     watch: {
@@ -186,6 +212,39 @@ export default {
         onSelect(selectedKeys, info) {
             console.log("onSelect", info);
             this.selectedKeys = selectedKeys;
+        },
+        getAllMembers(callback) {
+            reqwest({
+                url: url + '?currentPage=1'+this.currentPage+'&pageSize=999',
+                type: 'json',
+                method: 'get',
+                contentType: 'application/json',
+                success: (res) => {
+                    callback(res)
+                },
+            })
+        },
+        getAllApplications(callback) {
+            reqwest({
+                url: url2,
+                type: 'json',
+                method: 'get',
+                contentType: 'application/json',
+                success: (res) => {
+                    callback(res)
+                },
+            })
+        },
+        getAllPermissionByApp(appId,callback){
+            reqwest({
+                url: url2 + '/' + appId + "/permissions",
+                type: 'json',
+                method: 'get',
+                contentType: 'application/json',
+                success: (res) => {
+                    callback(res)
+                },
+            })
         }
     }
 };

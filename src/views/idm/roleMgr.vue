@@ -26,13 +26,10 @@
         itemLayout="horizontal"
         :dataSource="data"
       >
-        <div
-          v-if="showLoadingMore"
-          slot="loadMore"
-          :style="{ textAlign: 'center', marginTop: '12px', height: '32px', lineHeight: '32px' }"
-        >
-          <a-spin v-if="loadingMore"/>
-          <a-button v-else @click="onLoadMore">加载更多</a-button>
+        <div slot="loadMore" :style="{ textAlign: 'center', marginTop: '12px', height: '32px', lineHeight: '32px' }">
+          <a-pagination :current="currentPage"
+          :pageSize="pageSize"
+          :total="total" @change="loadMoreByPage"/>
         </div>
         <a-list-item slot="renderItem" slot-scope="item">
           <a slot="actions" @click="editHandler">复制</a>
@@ -40,13 +37,9 @@
           <a slot="actions">移除</a>
           <!-- <a slot="actions">more</a> -->
           <a-list-item-meta >
-            <a slot="title" :href="item.href">{{item.name}}</a>
-            <a-avatar slot="avatar" style="backgroundColor:#87d068">{{item.name.substr(0,2)}}</a-avatar>
+            <a slot="title" :href="item.href">{{item.roleName}}</a>
+            <a-avatar slot="avatar" style="backgroundColor:#87d068">{{item.roleName.substr(0,2)}}</a-avatar>
           </a-list-item-meta>
-          
-          <!-- <a-avatar style="backgroundColor:#87d068">{{item.name.substr(0,2)}}</a-avatar> -->
-          <!-- <h5>{{item.name}}</h5> -->
-          <!-- <div>content</div> -->
         </a-list-item>
       </a-list>
     </a-col>
@@ -69,21 +62,24 @@ export default {
     return {
       loading: true,
       loadingMore: false,
-      showLoadingMore: true,
+      currentPage: 1,
+      total:0,
+      pageSize:3,
       data: [],
       visible: false
     }
   },
   mounted () {
     this.getData((res) => {
-      this.loading = false
-      this.data = res
+      this.loading = false;
+      this.data = res.records;
+      this.total = res.total;
     })
   },
   methods: {
     getData  (callback) {
       reqwest({
-        url: url,
+        url: url + '?currentPage='+this.currentPage+'&pageSize='+this.pageSize,
         type: 'json',
         method: 'get',
         contentType: 'application/json',
@@ -92,14 +88,12 @@ export default {
         },
       })
     },
-    onLoadMore () {
-      this.loadingMore = true
+    loadMoreByPage (current) {
+      this.currentPage = current;
       this.getData((res) => {
-        this.data = this.data.concat(res.results)
-        this.loadingMore = false
-        this.$nextTick(() => {
-          window.dispatchEvent(new Event('resize'))
-        })
+        this.loading = false
+        this.data = res.records;
+        this.total = res.total;
       })
     },
     editHandler() {
