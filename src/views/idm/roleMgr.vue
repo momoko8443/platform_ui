@@ -44,7 +44,7 @@
       </a-list>
     </a-col>
     <a-col :span="4"></a-col>
-    <role-edit-form :visible.sync="visible"></role-edit-form>
+    <role-edit-form :visible.sync="visible" :role="currentRole" @saveRoleSuccess="refreshHandler"></role-edit-form>
   </a-row>
 </template>
 <script>
@@ -66,15 +66,17 @@ export default {
       total:0,
       pageSize:3,
       data: [],
-      visible: false
+      visible: false,
+      currentRole: {
+        roleName:"",
+        reqRoleDtoReqs: [
+          {"appId": 5,"pemssionIds": []}
+        ]
+      }
     }
   },
   mounted () {
-    this.getData((res) => {
-      this.loading = false;
-      this.data = res.records;
-      this.total = res.total;
-    })
+    this.refreshHandler()
   },
   methods: {
     getData  (callback) {
@@ -101,6 +103,17 @@ export default {
     },
     addRole(){
       this.visible = true;
+      //this.currentRole = {};
+      //this.currentPage.roleName = "";
+      //this.currentPage.reqRoleDtoReqs = [{"appId": 5,"pemssionIds": []}];
+    },
+    refreshHandler(){
+      this.getData((res) => {
+        this.visible = false;
+        this.loading = false;
+        this.data = res.records;
+        this.total = res.total;
+      })
     }
   }
 }

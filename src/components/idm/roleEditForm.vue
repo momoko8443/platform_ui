@@ -16,7 +16,7 @@
         >
             <a-card title="角色名称">
                 <div>
-                    <a-input placeholder="请输入角色名称"></a-input>
+                    <a-input placeholder="请输入角色名称" v-model="roleName"></a-input>
                 </div>
             </a-card>
             <a-card title="成员分配" :style="{ marginTop: '16px' }">
@@ -36,7 +36,7 @@
             </a-card>
             <a-card title="权限分配" :style="{ marginTop: '16px' }">
                 <div>
-                    <a-select :defaultValue="5" style="width: 120px">
+                    <a-select style="width: 120px" v-model="selectedAppId">
                         <a-select-option v-for="app in applications" :key="app.id">{{app.appName}}</a-select-option>
                     </a-select>
                     <br>
@@ -77,7 +77,7 @@
         }"
             >
                 <a-button :style="{ marginRight: '8px' }" @click="onClose">取消</a-button>
-                <a-button @click="onClose" type="primary">创建</a-button>
+                <a-button @click="onSave" type="primary">创建</a-button>
             </div>
         </a-drawer>
     </div>
@@ -85,58 +85,18 @@
 <script>
 
 import reqwest from 'reqwest';
-const plainOptions = ["Apple", "Pear", "Orange"];
-const defaultCheckedList = ["Apple", "Orange"];
+const plainOptions = [];
+const defaultCheckedList = [];
 const url = '/benyun/api/members';
 const url2 = '/benyun/api/applications';
-const treeData = [
-    {
-        title: "0-0",
-        key: "0-0",
-        children: [
-            {
-                title: "0-0-0",
-                key: "0-0-0",
-                children: [
-                    { title: "0-0-0-0", key: "0-0-0-0" },
-                    { title: "0-0-0-1", key: "0-0-0-1" },
-                    { title: "0-0-0-2", key: "0-0-0-2" }
-                ]
-            },
-            {
-                title: "0-0-1",
-                key: "0-0-1",
-                children: [
-                    { title: "0-0-1-0", key: "0-0-1-0" },
-                    { title: "0-0-1-1", key: "0-0-1-1" },
-                    { title: "0-0-1-2", key: "0-0-1-2" }
-                ]
-            },
-            {
-                title: "0-0-2",
-                key: "0-0-2"
-            }
-        ]
-    },
-    {
-        title: "0-1",
-        key: "0-1",
-        children: [
-            { title: "0-1-0-0", key: "0-1-0-0" },
-            { title: "0-1-0-1", key: "0-1-0-1" },
-            { title: "0-1-0-2", key: "0-1-0-2" }
-        ]
-    },
-    {
-        title: "0-2",
-        key: "0-2"
-    }
-];
+const url3 = '/benyun/api/roles';
+const treeData = [];
 export default {
     name: "roleEditForm",
     components: {},
     props: {
-        visible: Boolean
+        visible: Boolean,
+        role:Object
     },
     mounted () {
         this.getAllMembers((result)=>{
@@ -153,7 +113,9 @@ export default {
             this.applications = result; 
             let defaultAppId = this.applications[0].id;
             this.getAllPermissionByApp(defaultAppId, (result)=>{
-                result = JSON.parse(JSON.stringify(result).replace(new RegExp('name','g'), 'title'));
+                let tmp = JSON.stringify(result).replace(new RegExp('name','g'), 'title');
+                tmp = tmp.replace(new RegExp('id','g'), 'key');
+                result = JSON.parse(tmp);
                 this.treeData = result;
             });
         });
@@ -162,14 +124,16 @@ export default {
         return {
             form: this.$form.createForm(this),
             //visible: false,
-            checkedList: defaultCheckedList,
+            checkedList: this.role.userList,
             indeterminate: true,
             checkAll: false,
             plainOptions,
             treeData,
-            expandedKeys: ['0-0-0', '0-0-1'],
+            expandedKeys: [],
             autoExpandParent: true,
-            checkedKeys: ['0-0-0'],
+            roleName: this.role.roleName,
+            selectedAppId: this.role.reqRoleDtoReqs[0].appId,
+            checkedKeys: this.role.reqRoleDtoReqs[0].pemssionIds,
             selectedKeys: [],
             members: [],
             applications: []
@@ -177,7 +141,7 @@ export default {
     },
     watch: {
         checkedKeys(val) {
-        console.log('onCheck', val)
+            console.log('onCheck', val)
         }
     },
     methods: {
@@ -190,6 +154,7 @@ export default {
                 !!checkedList.length &&
                 checkedList.length < plainOptions.length;
             this.checkAll = checkedList.length === plainOptions.length;
+            //console.log(checkedList);
         },
         onCheckAllChange(e) {
             Object.assign(this, {
@@ -208,10 +173,33 @@ export default {
         onCheck(checkedKeys) {
             console.log("onCheck", checkedKeys);
             this.checkedKeys = checkedKeys;
+
         },
         onSelect(selectedKeys, info) {
             console.log("onSelect", info);
             this.selectedKeys = selectedKeys;
+        },
+        onSave(){
+            this.role.roleName = this.roleName;
+            this.role.userList = this.checkedList;
+            this.role.reqRoleDtoReqs = [];
+            this.role.reqRoleDtoReqs.push({
+                appId : this.selectedAppId,
+                pemssionIds : this.checkedKeys
+            })
+            console.log(JSON.stringify(this.role));
+            reqwest({
+                url: url3,
+                type: 'json',
+                method: 'post',
+                data: JSON.stringify(this.role),
+                contentType: 'application/json',
+                success: (res) => {
+                    if(!res.errors){
+                        this.$emit('saveRoleSuccess');
+                    }
+                },
+            })
         },
         getAllMembers(callback) {
             reqwest({
