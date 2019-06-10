@@ -32,8 +32,8 @@
           :total="total" @change="loadMoreByPage"/>
         </div>
         <a-list-item slot="renderItem" slot-scope="item">
-          <a slot="actions" @click="editHandler">复制</a>
-          <a slot="actions" @click="editHandler">编辑</a>
+          <!-- <a slot="actions" @click="copyHandler">复制</a> -->
+          <a slot="actions" @click="editHandler(item.id)">编辑</a>
           <a slot="actions">移除</a>
           <!-- <a slot="actions">more</a> -->
           <a-list-item-meta >
@@ -69,6 +69,7 @@ export default {
       visible: false,
       currentRole: {
         roleName:"",
+        userList: [],
         reqRoleDtoReqs: [
           {"appId": 5,"pemssionIds": []}
         ]
@@ -90,6 +91,18 @@ export default {
         },
       })
     },
+    getRoleById (roleId, callback){
+      reqwest({
+        url: url + '/'+roleId,
+        type: 'json',
+        method: 'get',
+        contentType: 'application/json',
+        success: (res) => {
+          console.log(res);
+          callback(res);
+        },
+      })
+    },
     loadMoreByPage (current) {
       this.currentPage = current;
       this.getData((res) => {
@@ -98,14 +111,17 @@ export default {
         this.total = res.total;
       })
     },
-    editHandler() {
-      this.visible = true;
+    editHandler(id) {
+      this.getRoleById(id,(roleDetail)=>{
+        this.visible = true;
+        this.currentRole = roleDetail;
+        //console.log(roleDetail);
+        //console.log(this.currentRole);
+      });
     },
     addRole(){
       this.visible = true;
       //this.currentRole = {};
-      //this.currentPage.roleName = "";
-      //this.currentPage.reqRoleDtoReqs = [{"appId": 5,"pemssionIds": []}];
     },
     refreshHandler(){
       this.getData((res) => {

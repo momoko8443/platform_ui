@@ -124,24 +124,58 @@ export default {
         return {
             form: this.$form.createForm(this),
             //visible: false,
-            checkedList: this.role.userList,
+            //
             indeterminate: true,
             checkAll: false,
             plainOptions,
             treeData,
             expandedKeys: [],
             autoExpandParent: true,
-            roleName: this.role.roleName,
-            selectedAppId: this.role.reqRoleDtoReqs[0].appId,
-            checkedKeys: this.role.reqRoleDtoReqs[0].pemssionIds,
+            // p_roleName: "",
+            // p_selectedAppId: 0,
+            // p_checkedKeys: [],
+            // p_checkedList: [],
             selectedKeys: [],
             members: [],
             applications: []
         };
     },
-    watch: {
-        checkedKeys(val) {
-            console.log('onCheck', val)
+    computed: {
+        roleName:{
+            get(){
+                return this.role.roleName;
+            },
+            set(val){
+                this.role.roleName = val;
+                //this.p_roleName = val;
+            }
+        },
+        selectedAppId:{
+            get(){
+                return this.role.reqRoleDtoReqs[0].appId;
+            },
+            set(val){
+                this.role.reqRoleDtoReqs[0].appId = val;
+                //this.p_selectedAppId = val;
+            }
+        },
+        checkedList:{
+            get(){
+                return  this.role.userList;
+            },
+            set(val){
+                this.role.userList = val;
+                //this.p_checkedList = val;
+            }
+        },
+        checkedKeys:{
+            get(){
+                return this.role.reqRoleDtoReqs[0].pemssionIds;
+            },
+            set(val){
+                this.role.reqRoleDtoReqs[0].pemssionIds = val;
+                //this.p_checkedKeys = val;
+            }
         }
     },
     methods: {
@@ -180,15 +214,24 @@ export default {
             this.selectedKeys = selectedKeys;
         },
         onSave(){
-            this.role.roleName = this.roleName;
-            this.role.userList = this.checkedList;
-            this.role.reqRoleDtoReqs = [];
-            this.role.reqRoleDtoReqs.push({
-                appId : this.selectedAppId,
-                pemssionIds : this.checkedKeys
-            })
             console.log(JSON.stringify(this.role));
-            reqwest({
+            if(this.role.roleId){
+                //update an exists role
+                reqwest({
+                    url: url3,
+                    type: 'json',
+                    method: 'put',
+                    data: JSON.stringify(this.role),
+                    contentType: 'application/json',
+                    success: (res) => {
+                        if(!res.errors){
+                            this.$emit('saveRoleSuccess');
+                        }
+                    },
+                })
+            }else{
+                //create a new role
+                reqwest({
                 url: url3,
                 type: 'json',
                 method: 'post',
@@ -200,6 +243,9 @@ export default {
                     }
                 },
             })
+            }
+            
+            
         },
         getAllMembers(callback) {
             reqwest({
