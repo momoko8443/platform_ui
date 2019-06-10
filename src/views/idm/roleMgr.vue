@@ -48,7 +48,7 @@
   </a-row>
 </template>
 <script>
-import reqwest from 'reqwest'
+import axios from 'axios'
 import roleEditForm from '../../components/idm/roleEditForm'
 
 const url = '/benyun/api/roles';
@@ -81,27 +81,25 @@ export default {
   },
   methods: {
     getData  (callback) {
-      reqwest({
+      axios({
         url: url + '?currentPage='+this.currentPage+'&pageSize='+this.pageSize,
-        type: 'json',
+        responseType: 'json',
         method: 'get',
-        contentType: 'application/json',
-        success: (res) => {
-          callback(res)
-        },
-      })
+        headers: { 'content-type': 'application/json'},
+      }).then((res) => {
+          callback(res.data)
+      });
     },
     getRoleById (roleId, callback){
-      reqwest({
+      axios({
         url: url + '/'+roleId,
-        type: 'json',
+        responseType: 'json',
         method: 'get',
-        contentType: 'application/json',
-        success: (res) => {
-          console.log(res);
-          callback(res);
-        },
-      })
+        headers: { 'content-type': 'application/json'},
+      }).then((res) => {
+        console.log(res);
+        callback(res.data);
+      });
     },
     loadMoreByPage (current) {
       this.currentPage = current;
@@ -115,13 +113,17 @@ export default {
       this.getRoleById(id,(roleDetail)=>{
         this.visible = true;
         this.currentRole = roleDetail;
-        //console.log(roleDetail);
-        //console.log(this.currentRole);
       });
     },
     addRole(){
       this.visible = true;
-      //this.currentRole = {};
+      this.currentRole = {
+        roleName:"",
+        userList: [],
+        reqRoleDtoReqs: [
+          {"appId": 5,"pemssionIds": []}
+        ]
+      };
     },
     refreshHandler(){
       this.getData((res) => {

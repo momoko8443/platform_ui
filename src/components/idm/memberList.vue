@@ -25,7 +25,7 @@
   </a-list>
 </template>
 <script>
-import reqwest from 'reqwest'
+import axios from 'axios'
 
 const url = '/benyun/api/members';
 
@@ -50,15 +50,14 @@ export default {
   },
   methods: {
     getData  (callback) {
-      reqwest({
+      axios({
         url: url + '?currentPage='+this.currentPage+'&pageSize='+this.pageSize,
-        type: 'json',
+        responseType: 'json',
         method: 'get',
-        contentType: 'application/json',
-        success: (res) => {
-          callback(res)
-        },
-      })
+        headers: { 'content-type': 'application/json'},
+      }).then((res) => {
+          callback(res.data)
+      });
     },
     loadMoreByPage (current) {
       this.currentPage = current;

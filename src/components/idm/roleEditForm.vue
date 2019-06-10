@@ -36,7 +36,7 @@
             </a-card>
             <a-card title="权限分配" :style="{ marginTop: '16px' }">
                 <div>
-                    <a-select style="width: 120px" v-model="selectedAppId">
+                    <a-select style="width: 120px" v-model="selectedAppId" @change="selectedAppIdChanged">
                         <a-select-option v-for="app in applications" :key="app.id">{{app.appName}}</a-select-option>
                     </a-select>
                     <br>
@@ -66,16 +66,16 @@
             <a-divider/>
             <div
                 :style="{
-          position: 'absolute',
-          left: 0,
-          bottom: 0,
-          width: '100%',
-          borderTop: '1px solid #e9e9e9',
-          padding: '10px 16px',
-          background: '#fff',
-          textAlign: 'right'
-        }"
-            >
+                    position: 'absolute',
+                    left: 0,
+                    bottom: 0,
+                    width: '100%',
+                    borderTop: '1px solid #e9e9e9',
+                    padding: '10px 16px',
+                    background: '#fff',
+                    textAlign: 'right'
+                    }"
+                >
                 <a-button :style="{ marginRight: '8px' }" @click="onClose">取消</a-button>
                 <a-button @click="onSave" type="primary">创建</a-button>
             </div>
@@ -84,7 +84,7 @@
 </template>
 <script>
 
-import reqwest from 'reqwest';
+import axios from 'axios';
 const plainOptions = [];
 const defaultCheckedList = [];
 const url = '/benyun/api/members';
@@ -97,6 +97,15 @@ export default {
     props: {
         visible: Boolean,
         role:Object
+    },
+    watch: { 
+        role: function(newVal, oldVal) { // watch it
+            let role = newVal;
+            for (let i = 0; i < role.reqRoleDtoReqs.length; i++) {
+                const item = role.reqRoleDtoReqs[i];
+                this.appWtihPermMap[item.appId] = item.pemssionIds;
+            }
+        }
     },
     mounted () {
         this.getAllMembers((result)=>{
@@ -123,21 +132,17 @@ export default {
     data() {
         return {
             form: this.$form.createForm(this),
-            //visible: false,
-            //
             indeterminate: true,
             checkAll: false,
             plainOptions,
             treeData,
             expandedKeys: [],
             autoExpandParent: true,
-            // p_roleName: "",
-            // p_selectedAppId: 0,
-            // p_checkedKeys: [],
-            // p_checkedList: [],
             selectedKeys: [],
             members: [],
-            applications: []
+            applications: [],
+            appWtihPermMap:{},
+            pSelectedAppId: 0
         };
     },
     computed: {
@@ -147,16 +152,20 @@ export default {
             },
             set(val){
                 this.role.roleName = val;
-                //this.p_roleName = val;
             }
         },
         selectedAppId:{
             get(){
-                return this.role.reqRoleDtoReqs[0].appId;
+                if(!this.pSelectedAppId){
+                    this.pSelectedAppId = this.role.reqRoleDtoReqs[0].appId;
+                }           
+                return this.pSelectedAppId;
             },
             set(val){
-                this.role.reqRoleDtoReqs[0].appId = val;
-                //this.p_selectedAppId = val;
+                if(!this.appWtihPermMap[val]){
+                    this.appWtihPermMap[val] = []
+                };
+                this.pSelectedAppId = val;
             }
         },
         checkedList:{
@@ -165,20 +174,27 @@ export default {
             },
             set(val){
                 this.role.userList = val;
-                //this.p_checkedList = val;
             }
         },
         checkedKeys:{
             get(){
-                return this.role.reqRoleDtoReqs[0].pemssionIds;
+                return this.appWtihPermMap[this.selectedAppId]//this.role.reqRoleDtoReqs[0].pemssionIds;
             },
             set(val){
-                this.role.reqRoleDtoReqs[0].pemssionIds = val;
+                this.appWtihPermMap[this.selectedAppId] = val;
                 //this.p_checkedKeys = val;
             }
         }
     },
     methods: {
+        selectedAppIdChanged(){
+            this.getAllPermissionByApp(this.selectedAppId, (result)=>{
+                let tmp = JSON.stringify(result).replace(new RegExp('name','g'), 'title');
+                tmp = tmp.replace(new RegExp('id','g'), 'key');
+                result = JSON.parse(tmp);
+                this.treeData = result;
+            });
+        },
         onClose() {
             //this.visible = false;
             this.$emit("update:visible", false);
@@ -217,68 +233,61 @@ export default {
             console.log(JSON.stringify(this.role));
             if(this.role.roleId){
                 //update an exists role
-                reqwest({
+                axios({
                     url: url3,
-                    type: 'json',
+                    responseType: 'json',
                     method: 'put',
                     data: JSON.stringify(this.role),
-                    contentType: 'application/json',
-                    success: (res) => {
-                        if(!res.errors){
-                            this.$emit('saveRoleSuccess');
-                        }
-                    },
-                })
-            }else{
-                //create a new role
-                reqwest({
-                url: url3,
-                type: 'json',
-                method: 'post',
-                data: JSON.stringify(this.role),
-                contentType: 'application/json',
-                success: (res) => {
+                    headers: { 'content-type': 'application/json'}
+                }).then((res) => {
                     if(!res.errors){
                         this.$emit('saveRoleSuccess');
                     }
-                },
-            })
+                });
+            }else{
+                //create a new role
+                axios({
+                    url: url3,
+                    type: 'json',
+                    method: 'post',
+                    data: JSON.stringify(this.role),
+                    headers: { 'content-type': 'application/json'}
+                }).then((res) => {
+                    if(!res.errors){
+                        this.$emit('saveRoleSuccess');
+                    }
+                });
             }
-            
-            
         },
         getAllMembers(callback) {
-            reqwest({
+            axios({
                 url: url + '?currentPage=1'+this.currentPage+'&pageSize=999',
-                type: 'json',
+                responseType: 'json',
                 method: 'get',
-                contentType: 'application/json',
-                success: (res) => {
-                    callback(res)
-                },
-            })
+                headers: { 'content-type': 'application/json'}
+            }).then((res) => {
+                callback(res.data)
+            });
         },
         getAllApplications(callback) {
-            reqwest({
+            axios({
                 url: url2,
-                type: 'json',
+                responseType: 'json',
                 method: 'get',
-                contentType: 'application/json',
-                success: (res) => {
-                    callback(res)
-                },
-            })
+                headers: { 'content-type': 'application/json'}
+            }).then((res) => {
+                callback(res.data)
+            });
         },
         getAllPermissionByApp(appId,callback){
-            reqwest({
+            axios({
                 url: url2 + '/' + appId + "/permissions",
-                type: 'json',
+                responseType: 'json',
                 method: 'get',
-                contentType: 'application/json',
-                success: (res) => {
-                    callback(res)
-                },
-            })
+                headers: { 'content-type': 'application/json'}
+            }).then((res) => {
+                callback(res.data)
+            });
         }
     }
 };

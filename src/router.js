@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import erpHome from './views/erpHome.vue'
 import dashboard from './views/dashboard.vue'
+import errorPage from './views/errorPage.vue'
 import idmHome from './views/idmHome'
 import memberMgr from './views/idm/memberMgr.vue'
 import roleMgr from './views/idm/roleMgr.vue'
@@ -28,6 +29,11 @@ export default new Router({
           path: '',
           name: 'dashboard',
           component: dashboard,
+        },
+        {
+          path: 'error',
+          name: 'error',
+          component: errorPage,
         },
         {
           path:'erp',

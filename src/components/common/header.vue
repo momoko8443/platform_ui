@@ -35,7 +35,7 @@
 <style>
 </style>
 <script>
-import reqwest from 'reqwest'
+import axios from 'axios'
 export default {
   name: 'benyun-header',
   data:function(){
@@ -50,15 +50,15 @@ export default {
   },
   methods:{
     getUserProfile(callback){
-      reqwest({
+      axios({
         url: '/benyun/api/user',
-        type: 'json',
+        responseType: 'json',
         method: 'get',
-        contentType: 'application/json',
-        success: (res) => {
+        headers: { 'content-type': 'application/json' },
+
+      }).then((res) => {
           callback(res)
-        },
-      })
+      });
     }
   }
 }
