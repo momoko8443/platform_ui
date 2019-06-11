@@ -17,14 +17,14 @@ axios.interceptors.response.use((res) => {
 });
 
 Vue.config.productionTip = false;
-router.beforeEach((to, from, next) => {
-  // ...
-  if (to.path === "/erp") {
-    window.location.href = "http://47.111.18.121:11121?tenant=1";
-  }
-  //console.log(to);
-  next();
-});
+// router.beforeEach((to, from, next) => {
+//   // ...
+//   if (to.path === "/erp") {
+//     window.location.href = "http://47.111.18.121:11121?tenant=1";
+//   }
+//   //console.log(to);
+//   next();
+// });
 Vue.use(Antd)
 new Vue({
   router,

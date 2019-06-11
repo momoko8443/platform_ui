@@ -27,7 +27,12 @@ export default {
     methods: {
         enterApplicationHandler:function(app){
             //alert();
-            this.$router.push({name: app.path});
+            if(app.path.search('http://') === 0){
+                window.open(app.path);
+            }else{
+                this.$router.push({name: app.path});
+            }
+            
             //alert(app.title);
         }
     },
