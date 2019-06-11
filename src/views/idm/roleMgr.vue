@@ -85,7 +85,7 @@ export default {
         url: url + '?currentPage='+this.currentPage+'&pageSize='+this.pageSize,
         responseType: 'json',
         method: 'get',
-        headers: { 'content-type': 'application/json'},
+        //headers: { 'content-type': 'application/json'},
       }).then((res) => {
           callback(res.data)
       });
@@ -95,7 +95,7 @@ export default {
         url: url + '/'+roleId,
         responseType: 'json',
         method: 'get',
-        headers: { 'content-type': 'application/json'},
+        //headers: { 'content-type': 'application/json'},
       }).then((res) => {
         console.log(res);
         callback(res.data);

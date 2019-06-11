@@ -1,8 +1,8 @@
 <template>
     <a-row type="flex" justify="center" :gutter="50">
       <a-col :span="4">
-          <h4>角色列表</h4>
-          <tags-wall></tags-wall>
+          <!-- <h4>角色列表</h4>
+          <tags-wall></tags-wall> -->
       </a-col>
       <a-col :span="16">
           <member-search-bar></member-search-bar>

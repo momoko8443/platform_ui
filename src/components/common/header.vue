@@ -54,7 +54,7 @@ export default {
         url: '/benyun/api/user',
         responseType: 'json',
         method: 'get',
-        headers: { 'content-type': 'application/json' },
+        //headers: { 'content-type': 'application/json' },
 
       }).then((res) => {
           callback(res)

@@ -12,7 +12,7 @@
     </div>
     <a-list-item slot="renderItem" slot-scope="item">
       <a slot="actions">重命名</a>
-      <a slot="actions">移除</a>
+      <a slot="actions" @click="removeMember(item.id)">移除</a>
       <!-- <a slot="actions">more</a> -->
       <a-list-item-meta
         :description="item.userName"
@@ -42,19 +42,22 @@ export default {
     }
   },
   mounted () {
-    this.getData((res) => {
-      this.loading = false
-      this.data = res.records;
-      this.total = res.total;
-    })
+    this.refreshList();
   },
   methods: {
+    refreshList(){
+      this.getData((res) => {
+        this.loading = false
+        this.data = res.records;
+        this.total = res.total;
+      })
+    },
     getData  (callback) {
       axios({
         url: url + '?currentPage='+this.currentPage+'&pageSize='+this.pageSize,
         responseType: 'json',
         method: 'get',
-        headers: { 'content-type': 'application/json'},
+        //headers: { 'content-type': 'application/json'},
       }).then((res) => {
           callback(res.data)
       });
@@ -67,6 +70,17 @@ export default {
         this.total = res.total;
       })
     },
+    removeMember(id) {
+      axios({
+        url: url + '/' + id,
+        responseType: 'json',
+        method: 'delete',
+        //headers: { 'content-type': 'application/json'},
+      }).then((res) => {
+          alert('removed');
+          this.refreshList();
+      });
+    }
   },
 }
 </script>
