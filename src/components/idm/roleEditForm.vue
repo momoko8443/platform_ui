@@ -238,7 +238,7 @@ export default {
                     responseType: 'json',
                     method: 'put',
                     data: JSON.stringify(this.role),
-                    headers: { 'content-type': 'application/json'}
+                    //headers: { 'content-type': 'application/json'}
                 }).then((res) => {
                     if(!res.errors){
                         this.$emit('saveRoleSuccess');
@@ -251,7 +251,7 @@ export default {
                     type: 'json',
                     method: 'post',
                     data: JSON.stringify(this.role),
-                    headers: { 'content-type': 'application/json'}
+                    //headers: { 'content-type': 'application/json'}
                 }).then((res) => {
                     if(!res.errors){
                         this.$emit('saveRoleSuccess');
@@ -264,7 +264,7 @@ export default {
                 url: url + '?currentPage=1'+this.currentPage+'&pageSize=999',
                 responseType: 'json',
                 method: 'get',
-                headers: { 'content-type': 'application/json'}
+                //headers: { 'content-type': 'application/json'}
             }).then((res) => {
                 callback(res.data)
             });
@@ -274,7 +274,7 @@ export default {
                 url: url2,
                 responseType: 'json',
                 method: 'get',
-                headers: { 'content-type': 'application/json'}
+                //headers: { 'content-type': 'application/json'}
             }).then((res) => {
                 callback(res.data)
             });
@@ -284,7 +284,7 @@ export default {
                 url: url2 + '/' + appId + "/permissions",
                 responseType: 'json',
                 method: 'get',
-                headers: { 'content-type': 'application/json'}
+                //headers: { 'content-type': 'application/json'}
             }).then((res) => {
                 callback(res.data)
             });
