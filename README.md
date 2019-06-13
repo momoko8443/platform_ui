@@ -1,29 +1,12 @@
-# antd-demo
+# 平台前端（纯VUE）
 
-## Project setup
+## 安装
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+## 打包并发布到platform_web_server
 ```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
+npm run dist
 ```
 
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

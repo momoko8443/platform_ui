@@ -29,6 +29,7 @@
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
     "gulp": "^4.0.2",
+    "gulp-clean": "^0.4.0",
     "gulp-rename": "^1.4.0",
     "image-webpack-loader": "^5.0.0",
     "vue-template-compiler": "^2.5.21"
