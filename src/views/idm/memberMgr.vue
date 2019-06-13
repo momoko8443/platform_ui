@@ -1,8 +1,8 @@
 <template>
     <a-row type="flex" justify="center" :gutter="50">
       <a-col :span="4">
-          <h4>分类标签</h4>
-          <tags-wall></tags-wall>
+          <!-- <h4>角色列表</h4>
+          <tags-wall></tags-wall> -->
       </a-col>
       <a-col :span="16">
           <member-search-bar></member-search-bar>
@@ -17,7 +17,7 @@
 <script>
 import memberList from "../../components/idm/memberList";
 import memberSearchBar from "../../components/idm/memberSearchBar";
-import tagsWall from "../../components/erp/tagsWall";
+import tagsWall from "../../components/common/tagsWall";
 export default {
     name: "memberMgr",
     components: {

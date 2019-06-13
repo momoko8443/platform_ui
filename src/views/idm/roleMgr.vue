@@ -26,36 +26,32 @@
         itemLayout="horizontal"
         :dataSource="data"
       >
-        <div
-          v-if="showLoadingMore"
-          slot="loadMore"
-          :style="{ textAlign: 'center', marginTop: '12px', height: '32px', lineHeight: '32px' }"
-        >
-          <a-spin v-if="loadingMore"/>
-          <a-button v-else @click="onLoadMore">加载更多</a-button>
+        <div slot="loadMore" :style="{ textAlign: 'center', marginTop: '12px', height: '32px', lineHeight: '32px' }">
+          <a-pagination :current="currentPage"
+          :pageSize="pageSize"
+          :total="total" @change="loadMoreByPage"/>
         </div>
         <a-list-item slot="renderItem" slot-scope="item">
-          <a slot="actions" @click="editHandler">复制</a>
-          <a slot="actions" @click="editHandler">编辑</a>
+          <!-- <a slot="actions" @click="copyHandler">复制</a> -->
+          <a slot="actions" @click="editHandler(item.id)">编辑</a>
           <a slot="actions">移除</a>
           <!-- <a slot="actions">more</a> -->
-          <a-list-item-meta :description="item.description">
-            <a slot="title" href="https://vue.ant.design/">{{item.name}}</a>
-            <a-avatar slot="avatar" v-bind:src="item.avatar"/>
+          <a-list-item-meta >
+            <a slot="title" :href="item.href">{{item.roleName}}</a>
+            <a-avatar slot="avatar" style="backgroundColor:#87d068">{{item.roleName.substr(0,2)}}</a-avatar>
           </a-list-item-meta>
-          <!-- <div>content</div> -->
         </a-list-item>
       </a-list>
     </a-col>
     <a-col :span="4"></a-col>
-    <role-edit-form :visible.sync="visible"></role-edit-form>
+    <role-edit-form :visible.sync="visible" :role="currentRole" @saveRoleSuccess="refreshHandler"></role-edit-form>
   </a-row>
 </template>
 <script>
-import reqwest from 'reqwest'
+import axios from 'axios'
 import roleEditForm from '../../components/idm/roleEditForm'
 
-const url = '/api/members';
+const url = '/benyun/api/roles';
 
 export default {
   name: "roleMgr",
@@ -66,47 +62,76 @@ export default {
     return {
       loading: true,
       loadingMore: false,
-      showLoadingMore: true,
+      currentPage: 1,
+      total:0,
+      pageSize:3,
       data: [],
-      visible: false
+      visible: false,
+      currentRole: {
+        roleName:"",
+        userList: [],
+        reqRoleDtoReqs: [
+          {"appId": 5,"pemssionIds": []}
+        ]
+      }
     }
   },
   mounted () {
-    this.getData((res) => {
-      this.loading = false
-      this.data = res
-    })
+    this.refreshHandler()
   },
   methods: {
     getData  (callback) {
-      reqwest({
-        url: url,
-        type: 'json',
+      axios({
+        url: url + '?currentPage='+this.currentPage+'&pageSize='+this.pageSize,
+        responseType: 'json',
         method: 'get',
-        contentType: 'application/json',
-        success: (res) => {
-          callback(res)
-        },
-      })
+        //headers: { 'content-type': 'application/json'},
+      }).then((res) => {
+          callback(res.data)
+      });
     },
-    onLoadMore () {
-      this.loadingMore = true
+    getRoleById (roleId, callback){
+      axios({
+        url: url + '/'+roleId,
+        responseType: 'json',
+        method: 'get',
+        //headers: { 'content-type': 'application/json'},
+      }).then((res) => {
+        console.log(res);
+        callback(res.data);
+      });
+    },
+    loadMoreByPage (current) {
+      this.currentPage = current;
       this.getData((res) => {
-        this.data = this.data.concat(res.results)
-        this.loadingMore = false
-        this.$nextTick(() => {
-          window.dispatchEvent(new Event('resize'))
-        })
+        this.loading = false
+        this.data = res.records;
+        this.total = res.total;
       })
     },
-    addRole () {
-
-    },
-    editHandler() {
-      this.visible = true;
+    editHandler(id) {
+      this.getRoleById(id,(roleDetail)=>{
+        this.visible = true;
+        this.currentRole = roleDetail;
+      });
     },
     addRole(){
       this.visible = true;
+      this.currentRole = {
+        roleName:"",
+        userList: [],
+        reqRoleDtoReqs: [
+          {"appId": 5,"pemssionIds": []}
+        ]
+      };
+    },
+    refreshHandler(){
+      this.getData((res) => {
+        this.visible = false;
+        this.loading = false;
+        this.data = res.records;
+        this.total = res.total;
+      })
     }
   }
 }

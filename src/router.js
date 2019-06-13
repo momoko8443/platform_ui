@@ -1,17 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
-import erpHome from './views/erpHome.vue'
 import dashboard from './views/dashboard.vue'
+import errorPage from './views/errorPage.vue'
 import idmHome from './views/idmHome'
 import memberMgr from './views/idm/memberMgr.vue'
 import roleMgr from './views/idm/roleMgr.vue'
-import warehouse from './views/warehouse.vue'
-import goods from './views/goods.vue'
-import purchaseMgr from './views/purchaseMgr.vue'
-import purchaseCreate from './views/purchaseCreate.vue'
-import saleOrderMgr from './views/saleOrderMgr.vue'
-import saleOrderCreate from './views/saleOrderCreate.vue'
+
 Vue.use(Router)
 
 export default new Router({
@@ -30,15 +25,11 @@ export default new Router({
           component: dashboard,
         },
         {
-          path:'erp',
-          name:'erp',
-          component: erpHome,
-          meta: {
-            nav:[
-              {name:"物", path:"erp"}
-            ]
-          }
+          path: 'error',
+          name: 'error',
+          component: errorPage,
         },
+        
         {
           path:'idm',
           name:'idm',
@@ -55,7 +46,7 @@ export default new Router({
           component: memberMgr,
           meta: {
             nav:[
-              {name:"人", path:"idm"},
+              {name:"权限管理", path:"idm"},
               {name:"成员", path:"member"}
             ]
           }
@@ -66,76 +57,8 @@ export default new Router({
           component: roleMgr,
           meta: {
             nav:[
-              {name:"人", path:"idm"},
+              {name:"权限管理", path:"idm"},
               {name:"角色", path:"role"}
-            ]
-          }
-        },
-        {
-          path: 'warehouse',
-          name: 'warehouse',
-          component: warehouse,
-          meta: {
-            nav:[
-              {name:"物", path:"erp"},
-              {name:"库存", path:"warehouse"}
-            ]
-          }
-        },
-        {
-          path: 'goods',
-          name: 'goods',
-          component: goods,
-          meta: {
-            nav:[
-              {name:"物", path:"erp"},
-              {name:"初始", path:"goods"}
-            ]
-          }
-        },
-        {
-          path: 'purchase',
-          name: 'purchase',
-          component: purchaseMgr,
-          meta: {
-            nav:[
-              {name:"物", path:"erp"},
-              {name:"进货", path:"purchase"}
-            ]
-          }
-        },
-        {
-          path: 'purchase_create',
-          name: 'purchase_create',
-          component: purchaseCreate,
-          meta: {
-            nav:[
-              {name:"物", path:"erp"},
-              {name:"进货", path:"purchase"},
-              {name:"创建进货单", path:"purchase_create"}
-            ]
-          }
-        },
-        {
-          path: 'sale',
-          name: 'sale',
-          component: saleOrderMgr,
-          meta: {
-            nav:[
-              {name:"物", path:"erp"},
-              {name:"销售", path:"sale"},
-            ]
-          }
-        },
-        {
-          path: 'sale_create',
-          name: 'sale_create',
-          component: saleOrderCreate,
-          meta: {
-            nav:[
-              {name:"物", path:"erp"},
-              {name:"销售", path:"sale"},
-              {name:"创建销售单", path:"sale_create"}
             ]
           }
         },

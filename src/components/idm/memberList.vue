@@ -5,27 +5,29 @@
     itemLayout="horizontal"
     :dataSource="data"
   >
-    <div v-if="showLoadingMore" slot="loadMore" :style="{ textAlign: 'center', marginTop: '12px', height: '32px', lineHeight: '32px' }">
-      <a-spin v-if="loadingMore" />
-      <a-button v-else @click="onLoadMore">加载更多</a-button>
+    <div slot="loadMore" :style="{ textAlign: 'center', marginTop: '12px', height: '32px', lineHeight: '32px' }">
+      <a-pagination :current="currentPage"
+       :pageSize="pageSize"
+       :total="total" @change="loadMoreByPage"/>
     </div>
     <a-list-item slot="renderItem" slot-scope="item">
-      <a slot="actions">移除</a>
+      <a slot="actions">重命名</a>
+      <a slot="actions" @click="removeMember(item.id)">移除</a>
       <!-- <a slot="actions">more</a> -->
       <a-list-item-meta
-        :description="item.description"
+        :description="item.userName"
       >
-        <a slot="title" href="https://vue.ant.design/">{{item.name}}</a>
-        <a-avatar slot="avatar" v-bind:src="item.avatar" />
+        <a slot="title" href="https://vue.ant.design/">{{item.userName}}</a>
+        <a-avatar slot="avatar" v-bind:src="item.headImgUrl" />
       </a-list-item-meta>
       <!-- <div>content</div> -->
     </a-list-item>
   </a-list>
 </template>
 <script>
-import reqwest from 'reqwest'
+import axios from 'axios'
 
-const url = '/api/members';
+const url = '/benyun/api/members';
 
 export default {
   name: "memberList",
@@ -33,38 +35,52 @@ export default {
     return {
       loading: true,
       loadingMore: false,
-      showLoadingMore: true,
+      currentPage: 1,
+      total:0,
+      pageSize:3,
       data: [],
     }
   },
   mounted () {
-    this.getData((res) => {
-      this.loading = false
-      this.data = res
-    })
+    this.refreshList();
   },
   methods: {
-    getData  (callback) {
-      reqwest({
-        url: url,
-        type: 'json',
-        method: 'get',
-        contentType: 'application/json',
-        success: (res) => {
-          callback(res)
-        },
-      })
-    },
-    onLoadMore () {
-      this.loadingMore = true
+    refreshList(){
       this.getData((res) => {
-        this.data = this.data.concat(res.results)
-        this.loadingMore = false
-        this.$nextTick(() => {
-          window.dispatchEvent(new Event('resize'))
-        })
+        this.loading = false
+        this.data = res.records;
+        this.total = res.total;
       })
     },
+    getData  (callback) {
+      axios({
+        url: url + '?currentPage='+this.currentPage+'&pageSize='+this.pageSize,
+        responseType: 'json',
+        method: 'get',
+        //headers: { 'content-type': 'application/json'},
+      }).then((res) => {
+          callback(res.data)
+      });
+    },
+    loadMoreByPage (current) {
+      this.currentPage = current;
+      this.getData((res) => {
+        this.loading = false
+        this.data = res.records;
+        this.total = res.total;
+      })
+    },
+    removeMember(id) {
+      axios({
+        url: url + '/' + id,
+        responseType: 'json',
+        method: 'delete',
+        //headers: { 'content-type': 'application/json'},
+      }).then((res) => {
+          alert('removed');
+          this.refreshList();
+      });
+    }
   },
 }
 </script>

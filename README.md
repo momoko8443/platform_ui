@@ -1,13 +1,12 @@
-# 平台前端VUE
+# 平台前端（纯VUE）
 
 ## 安装
 ```
 npm install
 ```
 
-## 部署到nodejs服务器
+## 打包并发布到platform_web_server
 ```
 npm run dist
 ```
-
 

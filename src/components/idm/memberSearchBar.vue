@@ -25,6 +25,7 @@
 </template>
 <script>
 import jsonp from 'fetch-jsonp';
+import reqwest from 'reqwest';
 import querystring from 'querystring';
 
 let timeout;
