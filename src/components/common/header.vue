@@ -22,12 +22,26 @@
         <a-menu-item key="3">
           <router-link to="/goods">物品</router-link>
         </a-menu-item> -->
-        <a-menu-item key="4" style="float: right">
-          <!-- <router-link to="/login"> -->
-            <!-- <a-button type="primary" @click="doLogin">登录</a-button> -->
-          <!-- </router-link> -->
+        <!-- <a-menu-item key="4" style="float: right">
             <a-avatar style="backgroundColor:#87d068">{{userProfile.displayName}}</a-avatar>
-        </a-menu-item>
+        </a-menu-item> -->
+        <a-dropdown style="float: right;margin-top: 16px;">
+          <!-- <a class="ant-dropdown-link" href="#">
+            Hover me <a-icon type="down" />
+          </a> -->
+          <a-avatar style="backgroundColor:#87d068">{{userProfile.username.substr(0,2)}}</a-avatar>
+          <a-menu slot="overlay">
+            <a-menu-item>
+              <a href="javascript:;">档案</a>
+            </a-menu-item>
+            <!-- <a-menu-item>
+              <a href="javascript:;">2nd menu item</a>
+            </a-menu-item> -->
+            <a-menu-item>
+              <a href="javascript:;" @click="logoutHandler">登出</a>
+            </a-menu-item>
+          </a-menu>
+        </a-dropdown>
       </a-menu>
       
     </a-layout-header>
@@ -40,12 +54,14 @@ export default {
   name: 'benyun-header',
   data:function(){
     return {
-        userProfile:{}
+        userProfile:{
+          username:""
+        }
     }
   },
   created(){
       this.getUserProfile((profile)=>{
-        this.userProfile = profile;
+        this.userProfile = profile.data;
       });
   },
   methods:{
@@ -54,11 +70,12 @@ export default {
         url: '/benyun/api/user',
         responseType: 'json',
         method: 'get',
-        //headers: { 'content-type': 'application/json' },
-
       }).then((res) => {
           callback(res)
       });
+    },
+    logoutHander(){
+      console.log('do logout');
     }
   }
 }

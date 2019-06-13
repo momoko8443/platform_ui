@@ -17,7 +17,7 @@
 <script>
 import memberList from "../../components/idm/memberList";
 import memberSearchBar from "../../components/idm/memberSearchBar";
-import tagsWall from "../../components/erp/tagsWall";
+import tagsWall from "../../components/common/tagsWall";
 export default {
     name: "memberMgr",
     components: {
