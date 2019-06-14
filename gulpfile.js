@@ -1,7 +1,7 @@
 const gulp = require("gulp");
 const rename = require("gulp-rename");
 const clean = require("gulp-clean");
-const dest = "platform_web_server";
+const dest = process.env.DEST? process.env.DEST: "platform_web_server";
 
 gulp.task('clean', function(){
     return gulp.src(`../${dest}/public/*`)
