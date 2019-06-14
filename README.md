@@ -11,4 +11,4 @@ npm run dist
 ```
 
 ###
-do automation building test
+do automation building test2
