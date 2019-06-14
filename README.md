@@ -10,3 +10,5 @@ npm install
 npm run dist
 ```
 
+###
+do automation building test
