@@ -5,7 +5,7 @@
           <tags-wall></tags-wall> -->
       </a-col>
       <a-col :span="16">
-          <member-search-bar></member-search-bar>
+          <member-search-bar @addUserToMember="addUserToMemberHandler"></member-search-bar>
           <a-divider />
           <member-list></member-list>
       </a-col>
@@ -26,11 +26,8 @@ export default {
       "tags-wall": tagsWall
     },
     methods: {
-      addChainItemHandler: function(laneType){
-        alert(laneType);
-      },
-      addPurchaseOrder: function(){
-          this.$router.push({name: "purchase_create"});
+      addUserToMemberHandler(user){
+        alert(user);
       }
     }
 }

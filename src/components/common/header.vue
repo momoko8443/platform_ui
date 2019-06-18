@@ -38,7 +38,8 @@
               <a href="javascript:;">2nd menu item</a>
             </a-menu-item> -->
             <a-menu-item>
-              <a href="javascript:;" @click="logoutHandler">登出</a>
+              <!-- <a @click="logoutHandler">登出</a> -->
+              <a>登出</a>
             </a-menu-item>
           </a-menu>
         </a-dropdown>
@@ -74,9 +75,9 @@ export default {
           callback(res)
       });
     },
-    logoutHander(){
-      console.log('do logout');
-    }
+    // logoutHander(){
+    //   console.log('do logout');
+    // }
   }
 }
 </script>

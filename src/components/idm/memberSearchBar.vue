@@ -24,13 +24,16 @@
     </a-row>
 </template>
 <script>
-import jsonp from 'fetch-jsonp';
-import reqwest from 'reqwest';
+//import jsonp from 'fetch-jsonp';
+//import reqwest from 'reqwest';
+import axios from 'axios';
 import querystring from 'querystring';
 
 let timeout;
 let currentValue;
-
+let currentPage = 1;
+let pageSize = 10;
+let url = '/benyun/api/users';
 function fetch(value, callback) {
   if (timeout) {
     clearTimeout(timeout);
@@ -39,34 +42,36 @@ function fetch(value, callback) {
   currentValue = value;
 
   function fake() {
-    const str = querystring.encode({
-      code: 'utf-8',
-      q: value,
-    });
-    jsonp(`https://suggest.taobao.com/sug?${str}`)
-      .then(response => response.json())
-      .then((d) => {
-        if (currentValue === value) {
-          const result = d.result;
-          const data = [];
-          result.forEach((r) => {
-            data.push({
-              value: r[0],
-              text: r[0],
+    // const str = querystring.encode({
+    //   code: 'utf-8',
+    //   q: value,
+    // });
+    axios({
+        url: url + '?currentPage='+currentPage+'&pageSize='+pageSize + '&username=' + value,
+        responseType: 'json',
+        method: 'get',
+        //headers: { 'content-type': 'application/json'},
+      }).then((res) => {
+          if (currentValue === value) {
+            const result = res.data.records;;
+            const data = [];
+            result.forEach((r) => {
+              data.push({
+                value: r['id'],
+                text: r['userName'],
+              });
             });
-          });
-          callback(data);
-        }
+            callback(data);
+          }
       });
   }
-
   timeout = setTimeout(fake, 300);
 }
 export default {
   data() {
     return {
       data: [],
-      value: undefined,
+      value: undefined
     }
   },
   methods: {
@@ -79,7 +84,7 @@ export default {
       fetch(value, data => this.data = data);
     },
     addMember (){
-        
+      this.$emit('addUserToMember', currentValue);
     }
   }
 }

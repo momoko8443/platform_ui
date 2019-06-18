@@ -1,10 +1,13 @@
 const CompressionWebpackPlugin = require('compression-webpack-plugin');
-module.exports = {
+
+
+
+let config = {
     //outputDir: "../eop_web_server/private",
     devServer: {
         proxy: {
             "/api": {
-                target: "https://1cd910fc-f31f-4406-a658-2228cff31ea3.mock.pstmn.io"
+                target: "http://localhost:3000"
             }
         }
     },
@@ -36,14 +39,7 @@ module.exports = {
         //     'reqwest': 'reqwest'
         // },
         plugins: [
-            new CompressionWebpackPlugin({
-                filename: '[path].gz[query]',
-                algorithm: 'gzip',
-                test: /\.js$|\.json$|\.css/,
-                threshold: 0, // 只有大小大于该值的资源会被处理
-                minRatio: 0.8, // 只有压缩率小于这个值的资源才会被处理
-                deleteOriginalAssets: true // 删除原文件
-            })
+            
         ],
         optimization: {
             splitChunks: {
@@ -80,3 +76,24 @@ module.exports = {
         }
     }),
 }
+
+const useGZ = !!+process.env.USE_GZ;
+console.log(useGZ);
+let gz_plugin = null;
+console.log(typeof useGZ);
+if(useGZ){
+    console.log('useGZ is true');
+    gz_plugin = new CompressionWebpackPlugin({
+        filename: '[path].gz[query]',
+        algorithm: 'gzip',
+        test: /\.js$|\.json$|\.css/,
+        threshold: 0, // 只有大小大于该值的资源会被处理
+        minRatio: 0.8, // 只有压缩率小于这个值的资源才会被处理
+        deleteOriginalAssets: true // 删除原文件
+    });
+    config.configureWebpack.plugins.push(gz_plugin);
+}
+
+
+
+module.exports = config;

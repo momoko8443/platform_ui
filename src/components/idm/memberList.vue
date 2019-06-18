@@ -37,8 +37,9 @@ export default {
       loadingMore: false,
       currentPage: 1,
       total:0,
-      pageSize:3,
+      pageSize:10,
       data: [],
+      tenantId: 1
     }
   },
   mounted () {
@@ -54,7 +55,7 @@ export default {
     },
     getData  (callback) {
       axios({
-        url: url + '?currentPage='+this.currentPage+'&pageSize='+this.pageSize,
+        url: url + '?currentPage='+this.currentPage+'&pageSize='+this.pageSize + '&tenantId=' + this.tenantId,
         responseType: 'json',
         method: 'get',
         //headers: { 'content-type': 'application/json'},
