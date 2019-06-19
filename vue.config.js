@@ -38,9 +38,22 @@ let config = {
         //     'fetch-jsonp': 'fetch-jsonp',
         //     'reqwest': 'reqwest'
         // },
-        plugins: [
-            
-        ],
+        plugins: (() => {
+            const useGZ = !!+process.env.USE_GZ;
+            let gz_plugin = null;
+            if(useGZ){
+                gz_plugin = new CompressionWebpackPlugin({
+                    filename: '[path].gz[query]',
+                    algorithm: 'gzip',
+                    test: /\.js$|\.json$|\.css/,
+                    threshold: 0, // 只有大小大于该值的资源会被处理
+                    minRatio: 0.8, // 只有压缩率小于这个值的资源才会被处理
+                    deleteOriginalAssets: true // 删除原文件
+                });
+                return [gz_plugin];
+            }
+            return [];
+        })(),
         optimization: {
             splitChunks: {
                 cacheGroups: {
@@ -77,22 +90,7 @@ let config = {
     }),
 }
 
-const useGZ = !!+process.env.USE_GZ;
-console.log(useGZ);
-let gz_plugin = null;
-console.log(typeof useGZ);
-if(useGZ){
-    console.log('useGZ is true');
-    gz_plugin = new CompressionWebpackPlugin({
-        filename: '[path].gz[query]',
-        algorithm: 'gzip',
-        test: /\.js$|\.json$|\.css/,
-        threshold: 0, // 只有大小大于该值的资源会被处理
-        minRatio: 0.8, // 只有压缩率小于这个值的资源才会被处理
-        deleteOriginalAssets: true // 删除原文件
-    });
-    config.configureWebpack.plugins.push(gz_plugin);
-}
+
 
 
 

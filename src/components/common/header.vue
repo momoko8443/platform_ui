@@ -29,7 +29,7 @@
           <!-- <a class="ant-dropdown-link" href="#">
             Hover me <a-icon type="down" />
           </a> -->
-          <a-avatar style="backgroundColor:#87d068">{{userProfile.username.substr(0,2)}}</a-avatar>
+          <a-avatar style="backgroundColor:#87d068">{{userProfile.realName.substr(0,2)}}</a-avatar>
           <a-menu slot="overlay">
             <a-menu-item>
               <a href="javascript:;">档案</a>
@@ -56,7 +56,7 @@ export default {
   data:function(){
     return {
         userProfile:{
-          username:""
+          realName:""
         }
     }
   },

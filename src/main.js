@@ -6,7 +6,8 @@ import 'ant-design-vue/dist/antd.css'
 import router from './router'
 import "animate.css"
 
-axios.defaults.headers.post['content-type'] = 'application/json';
+//axios.defaults.headers.post['content-type'] = 'application/json';
+
 axios.interceptors.response.use((res) => {
   return res;
 }, function(error){

@@ -5,20 +5,42 @@
 </template>
 <script>
 import applicationTile from '../components/applicationTile';
+import axios from 'axios';
+import { constants } from 'crypto';
+
+const url = "/benyun/api/applications";
 export default {
     name: "benyun-dashboard",
     data: function(){
         return {
             usersApps : [
-                {title:"ERP", desc: "PHP版EPR系统",path:"http://47.111.18.121:11121?tenant=1",color:"#a0d911"},
-                {title:"权限管理", desc: "成员权限管理",path:"idm",color: "#bfbfbf"},
-                // {title:"金", desc: "财务管理",path:"home",color: "#bfbfbf"},
-                // {title:"链", desc: "企业关系管理",path:"home",color: "#bfbfbf"}
-                ]
+                
+                {appName:"权限管理",path:"idm",appIcon: ""},
+            ]
         };
     },
     components:{
         "application-tile": applicationTile
+    },
+    mounted(){
+        this.getApplications((result)=>{
+            //console.log(result);
+            for (let i = 0; i < result.length; i++) {
+                const app = result[i];
+                this.usersApps.unshift(app);
+            }
+        });
+    },
+    methods:{
+        getApplications(callback){
+            axios({
+                url: url,
+                responseType: 'json',
+                method: 'get',
+            }).then((res) => {
+                callback(res.data)
+            });
+        }
     }
 }
 </script>

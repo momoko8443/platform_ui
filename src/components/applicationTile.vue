@@ -15,7 +15,10 @@
 </style>
 
 <script>
+import axios from 'axios'
+const url = '/benyun/jumper';
 import applicationItem from './applicationItem';
+import { constants } from 'crypto';
 export default {
     name: "applicationTile",
     components:{
@@ -27,8 +30,18 @@ export default {
     methods: {
         enterApplicationHandler:function(app){
             //alert();
-            if(app.path.search('http://') === 0){
-                window.open(app.path);
+            if(!app.path || app.path.search('http://') === 0){
+                if(app.webServerRedirectUri){
+                    const appUrl = encodeURI(app.webServerRedirectUri);
+                    axios({
+                        method: 'post',
+                        url:url,
+                        data:{appUrl: appUrl},
+                    }).then((result)=>{
+                        console.log(result)
+                        window.open(result.data);
+                    });
+                }          
             }else{
                 this.$router.push({name: app.path});
             }
