@@ -36,33 +36,8 @@
             </a-card>
             <a-card title="权限分配" :style="{ marginTop: '16px' }">
                 <div>
-                    <!-- <a-select style="width: 120px" v-model="selectedAppId" @change="selectedAppIdChanged">
-                        <a-select-option v-for="app in applications" :key="app.id">{{app.appName}}</a-select-option>
-                    </a-select>
-                    <br>
-                    <br> -->
-                    <!-- <div>
-                <a-checkbox
-                :indeterminate="indeterminate"
-                @change="onCheckAllChange"
-                :checked="checkAll"
-                >全选</a-checkbox>
-            </div>
-                    <br>-->
-                    <!-- <a-checkbox-group :options="plainOptions" v-model="checkedList" @change="onChange"/> -->
-                    <!-- <a-tree
-                        checkable
-                        @expand="onExpand"
-                        :expandedKeys="expandedKeys"
-                        :autoExpandParent="autoExpandParent"
-                        v-model="checkedKeys"
-                        @select="onSelect"
-                        :selectedKeys="selectedKeys"
-                        :treeData="treeData"
-                    /> -->
-                    <a-tabs :defaultActiveKey="defaultAppId" @change="selectedAppIdChanged">
+                    <a-tabs :activeKey="selectedAppId" @change="selectedAppIdChanged">
                         <a-tab-pane :tab="app.appName" v-for="app in applicationsMap" :key="app.id">
-                            <!-- {{app.appName}} -->
                             <a-tree
                                 checkable
                                 v-model="checkedKeys"
@@ -87,7 +62,7 @@
                     }"
                 >
                 <a-button :style="{ marginRight: '8px' }" @click="onClose">取消</a-button>
-                <a-button @click="onSave" type="primary">创建</a-button>
+                <a-button @click="onSave" type="primary">保存</a-button>
             </div>
         </a-drawer>
     </div>
@@ -95,8 +70,8 @@
 <script>
 import Vue from 'vue';
 import axios from 'axios';
+import { constants } from 'crypto';
 const plainOptions = [];
-const defaultCheckedList = [];
 const url = '/benyun/api/members';
 const url2 = '/benyun/api/applications';
 const url3 = '/benyun/api/roles';
@@ -111,11 +86,37 @@ export default {
     watch: { 
         role: function(newVal, oldVal) { // watch it
             let role = newVal;
-            for (let i = 0; i < role.reqRoleDtoReqs.length; i++) {
-                const item = role.reqRoleDtoReqs[i];
-                const app = this.applicationsMap[item.appId];
-                app.checkedKeys = item.pemssionIds;
-            }
+            this.checkedList = role.userList;
+            console.log('bbb');
+            //console.log(JSON.stringify(this.applicationsMap));
+            this.getAllApplications((result)=>{
+                for (let i = 0; i < result.length; i++) {
+                    const app = result[i];
+                    app.id = ''+app.id;
+                    this.applicationsMap[''+app.id] = app;
+                }
+                this.selectedAppId = ''+result[0].id;
+                
+
+                let self = this;
+                this.getAllPermissionByApp(this.selectedAppId, (result)=>{
+                        let tmp = JSON.stringify(result).replace(new RegExp('name','g'), 'title');
+                        tmp = tmp.replace(new RegExp('id','g'), 'key');
+                        result = JSON.parse(tmp);
+                        self.applicationsMap[self.selectedAppId].treeData = result;
+                        
+                        for (let i = 0; i < role.reqRoleDtoReqs.length; i++) {
+                            const item = role.reqRoleDtoReqs[i];
+                            const app = self.applicationsMap[''+item.appId];
+                            let pemssionIdsString = [];
+                            for(let j=0;j<item.pemssionIds.length; j++){
+                                pemssionIdsString.push(''+item.pemssionIds[j]);
+                            }
+                            app.checkedKeys = pemssionIdsString;//item.pemssionIds;
+                        }
+                        self.checkedKeys =  self.applicationsMap[self.selectedAppId].checkedKeys;
+                    });
+                });
         },
         checkedKeys: function(newVal, oldVal){
             this.applicationsMap[this.selectedAppId].checkedKeys = newVal;
@@ -138,26 +139,7 @@ export default {
             }
             this.plainOptions = membersOpions;
         });
-        this.getAllApplications((result)=>{
-            this.applications = result; 
-            this.selectedAppId = this.applications[0].id;
-            this.defaultAppId = this.selectedAppId;
-            this.getAllPermissionByApp(this.defaultAppId, (result)=>{
-                let tmp = JSON.stringify(result).replace(new RegExp('name','g'), 'title');
-                tmp = tmp.replace(new RegExp('id','g'), 'key');
-                result = JSON.parse(tmp);
-                this.applications[0].treeData = result;
-                for (let i = 0; i < this.applications.length; i++) {
-                    const app = this.applications[i];
-                    this.applicationsMap[app.id] = app;
-                    if(!app.treeData){
-                        app.treeData = [];
-                    }
-                    this.checkedKeys = app.checkedKeys;
-                }
-            });
-            
-        });
+        
     },
     data() {
         return {
@@ -169,12 +151,10 @@ export default {
             expandedKeys: [],
             autoExpandParent: true,
             members: [],
-            applications: [],
             applicationsMap: {},
             //appWtihPermMap:{},
-            selectedAppId: 0,
+            selectedAppId: '0',
             checkedList:[],
-            defaultAppId:0,
             checkedKeys:[]
         };
     },
@@ -183,10 +163,12 @@ export default {
     },
     methods: {
         selectedAppIdChanged(activeKey){
+            activeKey = '' + activeKey;
             this.selectedAppId = activeKey;
-            if(!this.applicationsMap[this.selectedAppId].treeData || this.applicationsMap[this.selectedAppId].treeData.length === 0){
-                let self = this;
-                this.getAllPermissionByApp(activeKey, (result)=>{
+            let self = this;
+            if(!self.applicationsMap[self.selectedAppId].treeData || self.applicationsMap[self.selectedAppId].treeData.length === 0){
+                
+                self.getAllPermissionByApp(activeKey, (result)=>{
                     let tmp = JSON.stringify(result).replace(new RegExp('name','g'), 'title');
                     tmp = tmp.replace(new RegExp('id','g'), 'key');
                     result = JSON.parse(tmp);
@@ -194,6 +176,8 @@ export default {
                     self.applicationsMap = Object.assign({}, self.applicationsMap);
                     self.checkedKeys = self.applicationsMap[activeKey].checkedKeys;
                 });
+            }else{
+                self.checkedKeys = self.applicationsMap[activeKey].checkedKeys;
             }
             
         },
@@ -233,21 +217,24 @@ export default {
             this.role.userList = this.checkedList;
             this.role.reqRoleDtoReqs = [];
             for(const key in this.applicationsMap){
+                
                 const app = this.applicationsMap[key];
-                let a = {};
-                a.appId = key;
-                a.pemssionIds = app.checkedKeys;
-                this.role.reqRoleDtoReqs.push(a);
+                if(app.checkedKeys){
+                    let a = {};
+                    a.appId = key;
+                    a.pemssionIds = app.checkedKeys;
+                    this.role.reqRoleDtoReqs.push(a);
+                }          
             }
             
             if(this.role.roleId){
                 //update an exists role
                 axios({
-                    url: url3,
+                    url: url3 + '/' + this.role.roleId,
                     responseType: 'json',
                     method: 'put',
-                    data: JSON.stringify(this.role),
-                    //headers: { 'content-type': 'application/json'}
+                    data: this.role,
+                    headers: { 'content-type': 'application/json'}
                 }).then((res) => {
                     if(!res.errors){
                         this.$emit('saveRoleSuccess');
@@ -255,12 +242,13 @@ export default {
                 });
             }else{
                 //create a new role
+                this.role.tenantId = Vue.currentTenantId;
                 axios({
                     url: url3,
                     type: 'json',
                     method: 'post',
-                    data: JSON.stringify(this.role),
-                    //headers: { 'content-type': 'application/json'}
+                    data: this.role,
+                    headers: { 'content-type': 'application/json'}
                 }).then((res) => {
                     if(!res.errors){
                         this.$emit('saveRoleSuccess');

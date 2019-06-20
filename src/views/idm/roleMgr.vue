@@ -34,7 +34,7 @@
         <a-list-item slot="renderItem" slot-scope="item">
           <!-- <a slot="actions" @click="copyHandler">复制</a> -->
           <a slot="actions" @click="editHandler(item.id)">编辑</a>
-          <a slot="actions">移除</a>
+          <a slot="actions" @click="removeHandler(item.id)">移除</a>
           <!-- <a slot="actions">more</a> -->
           <a-list-item-meta >
             <a slot="title" :href="item.href">{{item.roleName}}</a>
@@ -113,6 +113,16 @@ export default {
       this.getRoleById(id,(roleDetail)=>{
         this.visible = true;
         this.currentRole = roleDetail;
+      });
+    },
+    removeHandler(id) {
+      axios({
+        url: url + '/' + id,
+        responseType: 'json',
+        method: 'delete',
+        //headers: { 'content-type': 'application/json'},
+      }).then((res) => {
+          this.refreshHandler();
       });
     },
     addRole(){
