@@ -11,7 +11,7 @@
        :total="total" @change="loadMoreByPage"/>
     </div>
     <a-list-item slot="renderItem" slot-scope="item">
-      <a slot="actions">重命名</a>
+      <!-- <a slot="actions">重命名</a> -->
       <a slot="actions" @click="removeMember(item.id)">移除</a>
       <!-- <a slot="actions">more</a> -->
       <a-list-item-meta
@@ -26,7 +26,7 @@
 </template>
 <script>
 import axios from 'axios'
-
+import Vue from 'vue';
 const url = '/benyun/api/members';
 
 export default {
@@ -48,7 +48,7 @@ export default {
   methods: {
     refreshList(){
       this.getData((res) => {
-        this.loading = false
+        this.loading = false;
         this.data = res.records;
         this.total = res.total;
       })
@@ -73,9 +73,9 @@ export default {
     },
     removeMember(id) {
       axios({
-        url: url + '/' + id,
+        url: url + '/' + id + '?tenantId=' + Vue.currentTenantId,
         responseType: 'json',
-        method: 'delete',
+        method: 'delete'
         //headers: { 'content-type': 'application/json'},
       }).then((res) => {
           alert('removed');

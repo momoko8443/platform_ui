@@ -290,7 +290,7 @@ export default {
         },
         getAllPermissionByApp(appId,callback){
             axios({
-                url: url2 + '/' + appId + "/permissions",
+                url: url2 + '/' + appId + "/permissions?tenantId=" + Vue.currentTenantId,
                 responseType: 'json',
                 method: 'get',
                 //headers: { 'content-type': 'application/json'}

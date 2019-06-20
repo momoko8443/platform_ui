@@ -48,9 +48,9 @@
   </a-row>
 </template>
 <script>
-import axios from 'axios'
-import roleEditForm from '../../components/idm/roleEditForm'
-
+import axios from 'axios';
+import roleEditForm from '../../components/idm/roleEditForm';
+import Vue from 'vue';
 const url = '/benyun/api/roles';
 
 export default {
@@ -82,7 +82,7 @@ export default {
   methods: {
     getData  (callback) {
       axios({
-        url: url + '?currentPage='+this.currentPage+'&pageSize='+this.pageSize,
+        url: url + '?tenantId=' + Vue.currentTenantId +'&currentPage='+this.currentPage+'&pageSize='+this.pageSize,
         responseType: 'json',
         method: 'get',
         //headers: { 'content-type': 'application/json'},

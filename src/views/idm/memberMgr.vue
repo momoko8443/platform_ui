@@ -7,7 +7,7 @@
       <a-col :span="16">
           <member-search-bar @addUserToMember="addUserToMemberHandler"></member-search-bar>
           <a-divider />
-          <member-list></member-list>
+          <member-list ref="memberList"></member-list>
       </a-col>
       <a-col :span="4">
           
@@ -18,6 +18,10 @@
 import memberList from "../../components/idm/memberList";
 import memberSearchBar from "../../components/idm/memberSearchBar";
 import tagsWall from "../../components/common/tagsWall";
+import axios from 'axios';
+import Vue from 'vue';
+
+const url = '/benyun/api/members';
 export default {
     name: "memberMgr",
     components: {
@@ -26,8 +30,17 @@ export default {
       "tags-wall": tagsWall
     },
     methods: {
-      addUserToMemberHandler(user){
-        alert(user);
+      addUserToMemberHandler(userName){
+        axios({
+          url:url,
+          method:'post',
+          data:{
+            username: userName,
+            tenantId: Vue.currentTenantId
+          },
+        }).then((result)=>{
+          this.$refs.memberList.refreshList();
+        })
       }
     }
 }

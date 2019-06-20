@@ -57,7 +57,7 @@ function fetch(value, callback) {
             const data = [];
             result.forEach((r) => {
               data.push({
-                value: r['id'],
+                value: r['userName'],
                 text: r['userName'],
               });
             });

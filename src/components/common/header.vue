@@ -51,6 +51,7 @@
 </style>
 <script>
 import axios from 'axios'
+import Vue from 'vue';
 export default {
   name: 'benyun-header',
   data:function(){
@@ -63,6 +64,8 @@ export default {
   created(){
       this.getUserProfile((profile)=>{
         this.userProfile = profile.data;
+        Vue.currentUser = profile.data;
+        Vue.currentTenantId = profile.data.lineTenantId;
       });
   },
   methods:{
