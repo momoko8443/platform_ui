@@ -38,8 +38,7 @@
               <a href="javascript:;">2nd menu item</a>
             </a-menu-item> -->
             <a-menu-item>
-              <!-- <a @click="logoutHandler">登出</a> -->
-              <a>登出</a>
+              <a href="javascript:;" @click="logoutHandler">登出</a>
             </a-menu-item>
           </a-menu>
         </a-dropdown>
@@ -61,26 +60,13 @@ export default {
         }
     }
   },
-  created(){
-      this.getUserProfile((profile)=>{
-        this.userProfile = profile.data;
-        Vue.currentUser = profile.data;
-        Vue.currentTenantId = profile.data.lineTenantId;
-      });
+  mounted(){
+      this.userProfile = Vue.currentUser;
   },
   methods:{
-    getUserProfile(callback){
-      axios({
-        url: '/benyun/api/user',
-        responseType: 'json',
-        method: 'get',
-      }).then((res) => {
-          callback(res)
-      });
-    },
-    // logoutHander(){
-    //   console.log('do logout');
-    // }
+    logoutHander(){
+      console.log('do logout');
+    }
   }
 }
 </script>

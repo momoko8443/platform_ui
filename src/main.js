@@ -10,24 +10,32 @@ import "animate.css"
 
 axios.interceptors.response.use((res) => {
   return res;
-}, function(error){
+}, (error)=>{
+  console.log('error!!!',JSON.stringify(error));
   if(error.response.status === 401){
     router.push('error');
+  }else{
+    //Vue.$message.error(`出错啦!${error.response.code}:${error.response.message}`);
   }
-  //console.log(error);
 });
 
 Vue.config.productionTip = false;
-// router.beforeEach((to, from, next) => {
-//   // ...
-//   if (to.path === "/erp") {
-//     window.location.href = "http://47.111.18.121:11121?tenant=1";
-//   }
-//   //console.log(to);
-//   next();
-// });
-Vue.use(Antd)
-new Vue({
-  router,
-  render: h => h(App)
-}).$mount('#app')
+if(!Vue.currentUser){
+  axios({
+    url: '/benyun/api/user',
+    responseType: 'json',
+    method: 'get',
+  }).then((res) => {
+      //callback(res)
+      return res.data;
+  }).then((profile)=>{
+    Vue.currentUser = profile;
+    Vue.currentTenantId = profile.lineTenantId;
+    Vue.use(Antd)
+    new Vue({
+      router,
+      render: h => h(App)
+    }).$mount('#app')
+  });
+
+}

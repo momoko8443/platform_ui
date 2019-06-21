@@ -7,6 +7,7 @@
 import applicationTile from '../components/applicationTile';
 import axios from 'axios';
 import { constants } from 'crypto';
+import Vue from 'vue';
 
 const url = "/benyun/api/applications";
 export default {
@@ -34,7 +35,7 @@ export default {
     methods:{
         getApplications(callback){
             axios({
-                url: url,
+                url: url + '?tenantId=' + Vue.currentTenantId,
                 responseType: 'json',
                 method: 'get',
             }).then((res) => {

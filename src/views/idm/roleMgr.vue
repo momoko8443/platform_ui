@@ -98,7 +98,11 @@ export default {
         //headers: { 'content-type': 'application/json'},
       }).then((res) => {
         console.log(res);
+
+        //this.$message.error(`出错啦!`);
         callback(res.data);
+      }).catch((error)=>{
+        //this.$message.error(`出错啦!${error.response.code}:${error.response.message}`);
       });
     },
     loadMoreByPage (current) {
@@ -136,6 +140,7 @@ export default {
       };
     },
     refreshHandler(){
+      this.currentPage =  1;
       this.getData((res) => {
         this.visible = false;
         this.loading = false;
