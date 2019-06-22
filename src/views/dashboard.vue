@@ -14,10 +14,7 @@ export default {
     name: "benyun-dashboard",
     data: function(){
         return {
-            usersApps : [
-                
-                {appName:"权限管理",path:"idm",appIcon: ""},
-            ]
+            usersApps :[]
         };
     },
     components:{
@@ -26,6 +23,9 @@ export default {
     mounted(){
         this.getApplications((result)=>{
             //console.log(result);
+            if(Vue.currentUser.isAdmin){
+                this.usersApps.push({appName:"权限管理",path:"idm",appIcon: ""});
+            }
             for (let i = 0; i < result.length; i++) {
                 const app = result[i];
                 this.usersApps.unshift(app);
