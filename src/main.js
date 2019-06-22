@@ -4,18 +4,20 @@ import App from './App.vue'
 import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
 import router from './router'
-import "animate.css"
+import 'animate.css'
+import eventBus from './utils/eventBus'
+import EventsName from './constants/eventsName'
 
 //axios.defaults.headers.post['content-type'] = 'application/json';
 
 axios.interceptors.response.use((res) => {
   return res;
 }, (error)=>{
-  console.log('error!!!',JSON.stringify(error));
+  //console.log('error!!!',JSON.stringify(error));
   if(error.response.status === 401){
     router.push('error');
   }else{
-    //Vue.$message.error(`出错啦!${error.response.code}:${error.response.message}`);
+    eventBus.$emit(EventsName.SHOW_ALERT_MESSAGE,error);
   }
 });
 

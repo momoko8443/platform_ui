@@ -1,5 +1,6 @@
 <template>
   <a-layout id="components-layout-demo-fixed">
+    <alert-message></alert-message>
     <benyun-header></benyun-header>
     <a-layout-content :style="{ padding: '50px 50px', marginTop: '64px' }">
       <benyun-navigator></benyun-navigator>
@@ -27,6 +28,7 @@
 import header from "../components/common/header";
 import footer from "../components/common/footer";
 import navigator from "../components/common/navigator";
+import message from "../components/common/message";
 // import dashboard from "../components/common/dashboard";
 
 export default {
@@ -35,6 +37,7 @@ export default {
     "benyun-header":header,
     "benyun-footer": footer,
     "benyun-navigator": navigator,
+    "alert-message": message
     //"benyun-dashboard": dashboard
   }
 }

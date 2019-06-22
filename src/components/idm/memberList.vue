@@ -15,12 +15,11 @@
       <a slot="actions" @click="removeMember(item.id)">移除</a>
       <!-- <a slot="actions">more</a> -->
       <a-list-item-meta
-        :description="item.userName"
+        :description="item.mobile"
       >
         <a slot="title" href="https://vue.ant.design/">{{item.userName}}</a>
         <a-avatar slot="avatar" v-bind:src="item.headImgUrl" />
       </a-list-item-meta>
-      <!-- <div>content</div> -->
     </a-list-item>
   </a-list>
 </template>

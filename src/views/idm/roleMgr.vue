@@ -98,7 +98,6 @@ export default {
         //headers: { 'content-type': 'application/json'},
       }).then((res) => {
         console.log(res);
-
         //this.$message.error(`出错啦!`);
         callback(res.data);
       }).catch((error)=>{

@@ -4,7 +4,7 @@
             <a-select
                 showSearch
                 :value="value"
-                placeholder="input search text"
+                placeholder="根据手机号查询用户"
                 style="width: 100%"
                 :defaultActiveFirstOption="false"
                 :showArrow="false"
@@ -47,7 +47,7 @@ function fetch(value, callback) {
     //   q: value,
     // });
     axios({
-        url: url + '?currentPage='+currentPage+'&pageSize='+pageSize + '&username=' + value,
+        url: url + '?currentPage='+currentPage+'&pageSize='+pageSize + '&mobile=' + value,
         responseType: 'json',
         method: 'get',
         //headers: { 'content-type': 'application/json'},
@@ -57,7 +57,7 @@ function fetch(value, callback) {
             const data = [];
             result.forEach((r) => {
               data.push({
-                value: r['userName'],
+                value: r['mobile'],
                 text: r['userName'],
               });
             });

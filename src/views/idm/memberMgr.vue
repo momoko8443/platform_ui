@@ -30,12 +30,12 @@ export default {
       "tags-wall": tagsWall
     },
     methods: {
-      addUserToMemberHandler(userName){
+      addUserToMemberHandler(mobile){
         axios({
           url:url,
           method:'post',
           data:{
-            username: userName,
+            mobile: mobile,
             tenantId: Vue.currentTenantId
           },
         }).then((result)=>{
