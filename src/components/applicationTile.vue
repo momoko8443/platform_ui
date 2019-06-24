@@ -5,6 +5,9 @@
         <application-item :app="application" @enterApplication="enterApplicationHandler"></application-item>
       </a-col>
     </a-row>
+    <div class="no-dat-text" v-if="!applications.length">
+      您尚未开通系统访问权限，请与企业管理员联系！
+    </div>
   </div>
 </template>
 
@@ -51,3 +54,11 @@ export default {
     },
 }
 </script>
+<style scoped>
+  .no-dat-text{
+    height: 400px;
+    text-align: center;
+    font-size: 18px;
+    line-height: 400px;
+  }
+</style>
