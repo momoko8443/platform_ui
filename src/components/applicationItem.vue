@@ -21,5 +21,6 @@ export default {
     .logo-pic{
         display: block;
         width:100px;
+        height: 100px;
     }
 </style>
