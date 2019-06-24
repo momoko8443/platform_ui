@@ -34,7 +34,10 @@
         <a-list-item slot="renderItem" slot-scope="item">
           <!-- <a slot="actions" @click="copyHandler">复制</a> -->
           <a slot="actions" @click="editHandler(item.id)">编辑</a>
-          <a slot="actions" @click="removeHandler(item.id)">移除</a>
+          <a-popconfirm slot="actions" title="是否确定要删除?" @confirm="confirm(item.id)" @cancel="cancel" okText="是" cancelText="否">
+            <a href="javascript:;">移除</a>
+          </a-popconfirm>
+          <!-- <a slot="actions" @click="removeHandler(item.id)">移除</a> -->
           <!-- <a slot="actions">more</a> -->
           <a-list-item-meta >
             <a slot="title" :href="item.href">{{item.roleName}}</a>
@@ -118,6 +121,12 @@ export default {
         this.currentRole = roleDetail;
       });
     },
+    confirm(id){
+      this.removeHandler(id);
+    },
+    cancel(){
+
+    },
     removeHandler(id) {
       axios({
         url: url + '/' + id,
@@ -125,7 +134,10 @@ export default {
         method: 'delete',
         //headers: { 'content-type': 'application/json'},
       }).then((res) => {
-          this.refreshHandler();
+          let {code} = res.data;
+          if(code == 0){
+              this.refreshHandler();
+          }
       });
     },
     addRole(){

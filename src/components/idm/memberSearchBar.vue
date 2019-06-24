@@ -28,6 +28,7 @@
 //import reqwest from 'reqwest';
 import axios from 'axios';
 import querystring from 'querystring';
+import { validatenull } from '@/utils/validate';
 
 let timeout;
 let currentValue;
@@ -47,21 +48,28 @@ function fetch(value, callback) {
     //   q: value,
     // });
     axios({
-        url: url + '?currentPage='+currentPage+'&pageSize='+pageSize + '&mobile=' + value,
+        url: url,
         responseType: 'json',
         method: 'get',
-        //headers: { 'content-type': 'application/json'},
+        params:{
+            currentPage: currentPage,
+            pageSize: pageSize,
+            username: value
+        }
       }).then((res) => {
           if (currentValue === value) {
-            const result = res.data.records;;
-            const data = [];
-            result.forEach((r) => {
-              data.push({
-                value: r['mobile'],
-                text: r['userName'],
-              });
-            });
-            callback(data);
+            let {records} = res.data;
+            const result = records;
+            let newdata = [];
+            if(result.length){
+                result.forEach((r) => {
+                    newdata.push({
+                        value: r['userName'],
+                        text: r['userName']
+                    });
+                });
+                callback(newdata);
+            }
           }
       });
   }
@@ -79,12 +87,15 @@ export default {
       fetch(value, data => this.data = data);
     },
     handleChange (value) {
-      console.log(value)
       this.value = value
-      fetch(value, data => this.data = data);
+        fetch(value, data => this.data = data);
     },
     addMember (){
-      this.$emit('addUserToMember', currentValue);
+        if(validatenull(this.value)){
+            this.$message.warning('请选择你要添加的成员');
+            return false;
+        }
+       this.$emit('addUserToMember', currentValue);
     }
   }
 }

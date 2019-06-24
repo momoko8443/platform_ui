@@ -1,7 +1,7 @@
 <template>
     <a-card :title="app.appName" :bordered=false @click="onClick"  :style="{cursor:'pointer',borderWeight:'2px',borderStyle:'solid',borderColor:app.color}">
         <p>{{app.appDesc}}</p>
-        <img style="width:100px;"  :src="app.appLogo">
+        <img class="logo-pic"  :src="app.appLogo">
     </a-card>
 </template>
 <script>
@@ -17,3 +17,9 @@ export default {
     }
 }
 </script>
+<style scoped>
+    .logo-pic{
+        display: block;
+        width:100px;
+    }
+</style>

@@ -11,8 +11,14 @@
        :total="total" @change="loadMoreByPage"/>
     </div>
     <a-list-item slot="renderItem" slot-scope="item">
+      <a-popconfirm slot="actions"  title="你确定要删除吗?" @confirm="confirm(item.id)" @cancel="cancel" okText="是" cancelText="否">
+        <a href="javascript:;">移除</a>
+      </a-popconfirm>
       <!-- <a slot="actions">重命名</a> -->
-      <a slot="actions" @click="removeMember(item.id)">移除</a>
+      <!--
+        <a slot="actions" @click="removeMember(item.id)">移除</a>
+      -->
+
       <!-- <a slot="actions">more</a> -->
       <a-list-item-meta
         :description="item.mobile"
@@ -45,6 +51,10 @@ export default {
     this.refreshList();
   },
   methods: {
+    confirm(id){
+        this.removeMember(id);
+    },
+    cancel(){},
     refreshList(){
       this.getData((res) => {
         this.loading = false;
@@ -52,7 +62,7 @@ export default {
         this.total = res.total;
       })
     },
-    getData  (callback) {
+    getData(callback) {
       axios({
         url: url + '?currentPage='+this.currentPage+'&pageSize='+this.pageSize + '&tenantId=' + this.tenantId,
         responseType: 'json',
@@ -77,7 +87,6 @@ export default {
         method: 'delete'
         //headers: { 'content-type': 'application/json'},
       }).then((res) => {
-          alert('removed');
           this.refreshList();
       });
     }
