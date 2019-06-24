@@ -30,13 +30,13 @@
             Hover me <a-icon type="down" />
           </a> -->
           <a-avatar style="backgroundColor:#87d068">{{userProfile.realName.substr(0,2)}}</a-avatar>
-          <a-menu slot="overlay">
+          <a-menu slot="overlay" :selectedKeys="currentTenantId">
             <a-menu-item>
               <a href="javascript:;">档案</a>
             </a-menu-item>
-            <!-- <a-menu-item>
-              <a href="javascript:;">2nd menu item</a>
-            </a-menu-item> -->
+            <a-menu-item-group title="公司">
+              <a-menu-item v-for="tenant in userProfile.tenants" :key="tenant" @click="switchTenantHandler">{{tenant}}</a-menu-item>
+            </a-menu-item-group>
             <a-menu-item>
               <a href="javascript:;" @click="logoutHandler">登出</a>
             </a-menu-item>
@@ -51,21 +51,43 @@
 <script>
 import axios from 'axios'
 import Vue from 'vue';
+import { constants } from 'crypto';
+
+const url = "/benyun/api/users/current_tenant";
 export default {
   name: 'benyun-header',
   data:function(){
     return {
         userProfile:{
           realName:""
-        }
+        },
+        currentTenantId:""
     }
   },
   mounted(){
       this.userProfile = Vue.currentUser;
+      this.currentTenantId = this.userProfile.lineTenantId;
   },
   methods:{
     logoutHander(){
       console.log('do logout');
+    },
+    switchTenantHandler(e){
+      let key = e.key;
+      console.log(key);
+      let self = this;
+      axios({
+        method: 'put',
+        url: url,
+        data: {
+          tenantId: key
+        },
+        responseType: 'json',
+        headers: { 'content-type': 'application/json'}
+      }).then((result)=>{
+        alert('切换成功');
+        self.currentTenantId = key;
+      });
     }
   }
 }
