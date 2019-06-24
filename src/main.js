@@ -21,6 +21,7 @@ axios.interceptors.response.use((res) => {
   }
 });
 
+
 Vue.config.productionTip = false;
 if(!Vue.currentUser){
   axios({
@@ -38,6 +39,10 @@ if(!Vue.currentUser){
       router,
       render: h => h(App)
     }).$mount('#app')
+    if(profile.lineTenantId === null){
+      router.push('empty');
+    }
+    
   });
 
 }

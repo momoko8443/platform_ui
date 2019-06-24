@@ -25,6 +25,7 @@
         <!-- <a-menu-item key="4" style="float: right">
             <a-avatar style="backgroundColor:#87d068">{{userProfile.displayName}}</a-avatar>
         </a-menu-item> -->
+        
         <a-dropdown style="float: right;margin-top: 16px;">
           <!-- <a class="ant-dropdown-link" href="#">
             Hover me <a-icon type="down" />
@@ -34,14 +35,17 @@
             <a-menu-item>
               <a href="javascript:;">档案</a>
             </a-menu-item>
-            <a-menu-item-group title="公司">
+            <!-- <a-menu-item-group title="公司">
               <a-menu-item v-for="tenant in userProfile.tenants" :key="tenant" @click="switchTenantHandler">{{tenant}}</a-menu-item>
-            </a-menu-item-group>
+            </a-menu-item-group> -->
             <a-menu-item>
               <a href="javascript:;" @click="logoutHandler">登出</a>
             </a-menu-item>
           </a-menu>
         </a-dropdown>
+        <a-select :defaultValue="currentTenantId" style="width: 120px" @change="switchTenantHandler" style="float: right;margin-top: 16px;margin-right: 24px;">
+          <a-select-option v-for="tenant in userProfile.tenants" :key="tenant.id" :value="tenant.id">{{tenant.tenanntName}}</a-select-option>
+        </a-select>
       </a-menu>
       
     </a-layout-header>
@@ -52,28 +56,36 @@
 import axios from 'axios'
 import Vue from 'vue';
 import { constants } from 'crypto';
-
+import Cookies from 'js-cookie'
 const url = "/benyun/api/users/current_tenant";
 export default {
   name: 'benyun-header',
-  data:function(){
-    return {
-        userProfile:{
-          realName:""
-        },
-        currentTenantId:""
+  // data:function(){
+  //   return {
+  //       userProfile:{
+  //         realName:""
+  //       },
+  //       currentTenantId:""
+  //   }
+  // },
+  computed:{
+    userProfile(){
+      return Vue.currentUser;
+    },
+    currentTenantId(){
+      let currentTenantId = Cookies.get('currentTenantId');
+      return currentTenantId? currentTenantId : Vue.currentUser.lineTenantId;
     }
   },
-  mounted(){
-      this.userProfile = Vue.currentUser;
-      this.currentTenantId = this.userProfile.lineTenantId;
-  },
+  // mounted(){
+  //     //this.userProfile = Vue.currentUser;
+  //     //this.currentTenantId = this.userProfile.lineTenantId;
+  // },
   methods:{
     logoutHander(){
       console.log('do logout');
     },
-    switchTenantHandler(e){
-      let key = e.key;
+    switchTenantHandler(key){
       console.log(key);
       let self = this;
       axios({
@@ -85,8 +97,10 @@ export default {
         responseType: 'json',
         headers: { 'content-type': 'application/json'}
       }).then((result)=>{
-        alert('切换成功');
-        self.currentTenantId = key;
+        //alert('切换成功');
+        //self.currentTenantId = key;
+        Cookies.set('currentTenantId', key);
+        window.location.reload();
       });
     }
   }
