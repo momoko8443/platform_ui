@@ -22,16 +22,16 @@ let config = {
         // 启用 CSS modules for all css / pre-processor files.
         modules: false
     },
-    chainWebpack: config => {
-        config.module
-            .rule('images')
-            .use('image-webpack-loader')
-            .loader('image-webpack-loader')
-            .options({
-                bypassOnDebug: true
-            })
-            .end()
-    },
+    // chainWebpack: config => {
+    //     config.module
+    //         .rule('images')
+    //         .use('image-webpack-loader')
+    //         .loader('image-webpack-loader')
+    //         .options({
+    //             bypassOnDebug: true
+    //         })
+    //         .end()
+    // },
     configureWebpack: () => ({
         // externals: {
         //     'vue': 'Vue',
