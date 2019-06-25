@@ -56,7 +56,7 @@
 import axios from 'axios'
 import Vue from 'vue';
 import { constants } from 'crypto';
-import Cookies from 'js-cookie'
+//import Cookies from 'js-cookie'
 const url = "/benyun/api/users/current_tenant";
 export default {
   name: 'benyun-header',
@@ -73,8 +73,8 @@ export default {
       return Vue.currentUser;
     },
     currentTenantId(){
-      let currentTenantId = Cookies.get('currentTenantId');
-      return currentTenantId? currentTenantId : Vue.currentUser.lineTenantId;
+      //let currentTenantId = Cookies.get('currentTenantId');
+      return Vue.currentUser.lineTenantId;
     }
   },
   // mounted(){
@@ -99,7 +99,7 @@ export default {
       }).then((result)=>{
         //alert('切换成功');
         //self.currentTenantId = key;
-        Cookies.set('currentTenantId', key);
+        //Cookies.set('currentTenantId', key);
         window.location.reload();
       });
     }

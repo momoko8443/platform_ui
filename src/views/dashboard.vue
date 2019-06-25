@@ -8,13 +8,16 @@ import applicationTile from '../components/applicationTile';
 import axios from 'axios';
 import { constants } from 'crypto';
 import Vue from 'vue';
+//import logoPath from '../assets/logo.png';
 
 const url = "/benyun/api/applications";
+
 export default {
     name: "benyun-dashboard",
     data: function(){
         return {
-            usersApps :[]
+            usersApps :[],
+            idmLogo : require('@/assets/idm.png')
         };
     },
     components:{
@@ -24,7 +27,7 @@ export default {
         this.getApplications((result)=>{
             //console.log(result);
             if(Vue.currentUser.isAdmin){
-                this.usersApps.push({appName:"权限管理",path:"idm",appIcon: ""});
+                this.usersApps.push({appName:"权限管理",path:"idm",appLogo: this.idmLogo});
             }
             for (let i = 0; i < result.length; i++) {
                 const app = result[i];
