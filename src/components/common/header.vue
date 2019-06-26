@@ -39,7 +39,7 @@
               <a-menu-item v-for="tenant in userProfile.tenants" :key="tenant" @click="switchTenantHandler">{{tenant}}</a-menu-item>
             </a-menu-item-group> -->
             <a-menu-item>
-              <a href="javascript:;" @click="logoutHandler">登出</a>
+              <a href="/logout">登出</a>
             </a-menu-item>
           </a-menu>
         </a-dropdown>
@@ -71,7 +71,8 @@ export default {
   },
   methods:{
     logoutHander(){
-      console.log('do logout');
+      //console.log('do logout');
+      window.location.href = "/logout";
     },
     switchTenantHandler(key){
       console.log(key);
