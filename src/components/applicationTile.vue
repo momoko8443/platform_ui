@@ -5,9 +5,9 @@
         <application-item :app="application" @enterApplication="enterApplicationHandler"></application-item>
       </a-col>
     </a-row>
-    <div class="no-dat-text" v-if="!applications.length">
+    <!-- <div class="no-dat-text" v-if="!applications.length">
       您尚未开通系统访问权限，请与企业管理员联系！
-    </div>
+    </div> -->
   </div>
 </template>
 
