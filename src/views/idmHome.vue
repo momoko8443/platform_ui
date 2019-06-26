@@ -13,8 +13,8 @@ export default {
     data: function(){
         return {
             usersApps : [
-                {appName:"成员", appDesc: "管理成员",path:"member",color: "#69c0ff"},
-                {appName:"角色", appDesc: "为成员分配权限",path:"role",color: "#fadb14"},
+                {appName:"成员", appDesc: "管理成员",path:"member",appLogo: require('../assets/member.png'),color: "#69c0ff"},
+                {appName:"角色", appDesc: "为成员分配权限",path:"role",appLogo: require('../assets/role.png'),color: "#fadb14"},
                 // {title:"权限", desc: "应用权限管理",path:"authority",color: "#a0d911"},
                 // {title:"生产", desc: "生产计划",path:"erp",color: "#bfbfbf"},
                 // {title:"销售", desc: "销售链",path:"sale",color: "#b37feb"}

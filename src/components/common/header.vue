@@ -60,14 +60,6 @@ import { constants } from 'crypto';
 const url = "/benyun/api/users/current_tenant";
 export default {
   name: 'benyun-header',
-  // data:function(){
-  //   return {
-  //       userProfile:{
-  //         realName:""
-  //       },
-  //       currentTenantId:""
-  //   }
-  // },
   computed:{
     userProfile(){
       return Vue.currentUser;
@@ -77,10 +69,6 @@ export default {
       return Vue.currentUser.lineTenantId;
     }
   },
-  // mounted(){
-  //     //this.userProfile = Vue.currentUser;
-  //     //this.currentTenantId = this.userProfile.lineTenantId;
-  // },
   methods:{
     logoutHander(){
       console.log('do logout');
@@ -97,10 +85,7 @@ export default {
         responseType: 'json',
         headers: { 'content-type': 'application/json'}
       }).then((result)=>{
-        //alert('切换成功');
-        //self.currentTenantId = key;
-        //Cookies.set('currentTenantId', key);
-        window.location.reload();
+        window.location.href = '/main';
       });
     }
   }
