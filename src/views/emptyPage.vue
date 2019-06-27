@@ -3,6 +3,9 @@
         <h2>
             您尚未开通系统访问权限，请与企业管理员联系！
         </h2>
+        <el-button>
+            <a href="/logout">退出</a>
+        </el-button>
         <!-- <a-button @click="loginHandler">Login</a-button> -->
     </div>
 </template>
