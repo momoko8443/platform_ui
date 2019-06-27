@@ -30,7 +30,7 @@
           <!-- <a class="ant-dropdown-link" href="#">
             Hover me <a-icon type="down" />
           </a> -->
-          <a-avatar style="backgroundColor:#87d068">{{userProfile.realName.substr(0,2)}}</a-avatar>
+          <a-avatar style="backgroundColor:#87d068">{{displayName}}</a-avatar>
           <a-menu slot="overlay" :selectedKeys="currentTenantId">
             <a-menu-item>
               <a href="javascript:;">档案</a>
@@ -67,6 +67,15 @@ export default {
     currentTenantId(){
       //let currentTenantId = Cookies.get('currentTenantId');
       return Vue.currentUser.lineTenantId;
+    },
+    displayName(){
+      let displayName = "";
+      if(this.userProfile.realName){
+        return this.userProfile.realName.substr(0,2)
+      }
+      if(this.userProfile.mobile){
+        return this.userProfile.mobile.substr(0,3)
+      }
     }
   },
   methods:{
