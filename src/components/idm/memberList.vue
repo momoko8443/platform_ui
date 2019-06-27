@@ -23,7 +23,7 @@
       <a-list-item-meta
         :description="item.mobile"
       >
-        <a slot="title" href="https://vue.ant.design/">{{item.userName}}</a>
+        <a slot="title">{{item.userName}}</a>
         <a-avatar slot="avatar" v-bind:src="item.headImgUrl" />
       </a-list-item-meta>
     </a-list-item>
