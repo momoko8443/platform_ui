@@ -32,11 +32,9 @@
                         v-model="checkedList"
                         @change="onChange"
                     />
-                    <div class="text-message" v-if="isUserList">至少选择一项</div>
                 </div>
             </a-card>
             <a-card title="权限分配" :style="{ marginTop: '16px' }">
-                <div class="text-message" v-if="isCheck">至少选择一项</div>
                 <div>
                     <a-tabs :activeKey="selectedAppId" @change="selectedAppIdChanged">
                         <a-tab-pane :tab="app.appName" v-for="app in applicationsMap" :key="app.id">
@@ -145,8 +143,6 @@ export default {
     },
     data() {
         return {
-            isCheck:false,
-            isUserList:false,
             form: this.$form.createForm(this),
             indeterminate: true,
             checkAll: false,
@@ -233,18 +229,6 @@ export default {
             
             if(this.role.roleId){
                 //update an exists role
-                if(!this.role.userList.length){
-                    this.isUserList = true;
-                    return false;
-                }else{
-                    this.isUserList = false;
-                }
-                if(!this.checkedKeys.length){
-                    this.isCheck = true;
-                    return false;
-                }else{
-                    this.isCheck = false;
-                }
                 axios({
                     url: url3 + '/' + this.role.roleId,
                     responseType: 'json',
@@ -259,18 +243,6 @@ export default {
             }else{
                 //create a new role
                 this.role.tenantId = Vue.currentTenantId;
-                if(!this.role.userList.length){
-                    this.isUserList = true;
-                    return false;
-                }else{
-                    this.isUserList = false;
-                }
-               if(!this.checkedKeys.length){
-                    this.isCheck = true;
-                    return false;
-               }else{
-                   this.isCheck = false;
-               }
                 axios({
                     url: url3,
                     type: 'json',
@@ -317,9 +289,3 @@ export default {
     }
 };
 </script>
-<style scoped>
-    .text-message{
-        font-size: 14px;
-        color: red;
-    }
-</style>

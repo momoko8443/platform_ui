@@ -42,7 +42,7 @@ export default new Router({
           component: idmHome,
           meta: {
             nav:[
-              {name:"物", path:"idm"}
+              {name:"权限管理", path:"idm"}
             ]
           }
         },
