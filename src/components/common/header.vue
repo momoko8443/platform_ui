@@ -30,7 +30,9 @@
           <!-- <a class="ant-dropdown-link" href="#">
             Hover me <a-icon type="down" />
           </a> -->
-          <a-avatar style="backgroundColor:#87d068">{{displayName}}</a-avatar>
+            <!--<a-avatar style="backgroundColor:#87d068">{{displayName}}</a-avatar>-->
+            <img v-if="this.userProfile.isAdmin == 1" style="width: 32px;height: 32px;" src="http://i1.fuimg.com/670436/de834e9ba1206b58.png" alt="">
+            <img v-else style="width: 32px;height: 32px;"  src="http://i1.fuimg.com/670436/086887467510daa5.png" alt="">
           <a-menu slot="overlay" :selectedKeys="currentTenantId">
             <a-menu-item>
               <a href="javascript:;">档案</a>

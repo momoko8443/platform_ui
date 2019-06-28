@@ -24,7 +24,8 @@
         :description="item.mobile"
       >
         <a slot="title">{{item.userName}}</a>
-        <a-avatar slot="avatar" v-bind:src="item.headImgUrl" />
+        <!--<a-avatar slot="avatar" v-bind:src="item.headImgUrl" />-->
+        <img slot="avatar" src="http://i1.fuimg.com/670436/086887467510daa5.png" alt="">
       </a-list-item-meta>
     </a-list-item>
   </a-list>
