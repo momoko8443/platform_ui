@@ -39,11 +39,11 @@
               <a-menu-item v-for="tenant in userProfile.tenants" :key="tenant" @click="switchTenantHandler">{{tenant}}</a-menu-item>
             </a-menu-item-group> -->
             <a-menu-item>
-              <a href="/logout">登出</a>
+              <a href="/logout">退出登录</a>
             </a-menu-item>
           </a-menu>
         </a-dropdown>
-        <a-select :defaultValue="currentTenantId" style="width: 120px" @change="switchTenantHandler" style="float: right;margin-top: 16px;margin-right: 24px;">
+        <a-select v-if="userProfile.tenants.length" :defaultValue="currentTenantId" style="width: 120px" @change="switchTenantHandler" style="float: right;margin-top: 16px;margin-right: 24px;">
           <a-select-option v-for="tenant in userProfile.tenants" :key="tenant.id" :value="tenant.id">{{tenant.tenanntName}}</a-select-option>
         </a-select>
       </a-menu>
