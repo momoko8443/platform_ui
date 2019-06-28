@@ -54,11 +54,3 @@ export default {
     },
 }
 </script>
-<style scoped>
-  .no-dat-text{
-    height: 400px;
-    text-align: center;
-    font-size: 18px;
-    line-height: 400px;
-  }
-</style>
