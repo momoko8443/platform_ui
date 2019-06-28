@@ -255,6 +255,9 @@ export default {
                     if(!res.errors){
                         this.$emit('saveRoleSuccess');
                     }
+                },(err)=>{
+                    let { message} = err;
+                    message.error(message);
                 });
             }else{
                 //create a new role
@@ -278,9 +281,13 @@ export default {
                     data: this.role,
                     headers: { 'content-type': 'application/json'}
                 }).then((res) => {
+
                     if(!res.errors){
                         this.$emit('saveRoleSuccess');
                     }
+                },(err)=>{
+                    let { message} = err;
+                    message.error(message);
                 });
             }
         },
