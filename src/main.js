@@ -39,7 +39,7 @@ if(!Vue.currentUser){
       router,
       render: h => h(App)
     }).$mount('#app')
-    if(profile.lineTenantId === null){
+    if(profile.lineTenantId === null || profile.roles.length === 0){
       router.push('empty');
     }
     
