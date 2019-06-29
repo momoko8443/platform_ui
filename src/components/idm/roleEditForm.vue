@@ -193,7 +193,11 @@ export default {
                 !!checkedList.length &&
                 checkedList.length < plainOptions.length;
             this.checkAll = checkedList.length === plainOptions.length;
-            //console.log(checkedList);
+            if(!this.checkedList.length){
+                this.isUserList = true;
+            }else{
+                this.isUserList = false;
+            }
         },
         onCheckAllChange(e) {
             Object.assign(this, {
@@ -238,6 +242,9 @@ export default {
                 }else{
                     this.isUserList = false;
                 }
+                if(!this.checkedKeys.length){
+                    return false
+                }
                 axios({
                     url: url3 + '/' + this.role.roleId,
                     responseType: 'json',
@@ -260,6 +267,9 @@ export default {
                     return false;
                 }else{
                     this.isUserList = false;
+                }
+                if(!this.checkedKeys.length){
+                    return false
                 }
                 axios({
                     url: url3,
