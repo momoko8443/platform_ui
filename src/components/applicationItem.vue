@@ -22,5 +22,6 @@ export default {
         display: block;
         width:100px;
         height: 100px;
+        margin: 0 auto;
     }
 </style>
