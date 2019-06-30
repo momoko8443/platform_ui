@@ -32,11 +32,9 @@
                         v-model="checkedList"
                         @change="onChange"
                     />
-                    <div class="text-message" v-if="isUserList">至少选择一项</div>
                 </div>
             </a-card>
             <a-card title="权限分配" :style="{ marginTop: '16px' }">
-                <div class="text-message" v-if="!checkedKeys.length">至少选择一项</div>
                 <div>
                     <a-tabs :activeKey="selectedAppId" @change="selectedAppIdChanged">
                         <a-tab-pane :tab="app.appName" v-for="app in applicationsMap" :key="app.id">
@@ -145,7 +143,6 @@ export default {
     },
     data() {
         return {
-            isUserList:false,
             form: this.$form.createForm(this),
             indeterminate: true,
             checkAll: false,
@@ -193,11 +190,7 @@ export default {
                 !!checkedList.length &&
                 checkedList.length < plainOptions.length;
             this.checkAll = checkedList.length === plainOptions.length;
-            if(!this.checkedList.length){
-                this.isUserList = true;
-            }else{
-                this.isUserList = false;
-            }
+            //console.log(checkedList);
         },
         onCheckAllChange(e) {
             Object.assign(this, {
@@ -236,15 +229,6 @@ export default {
             
             if(this.role.roleId){
                 //update an exists role
-                if(!this.role.userList.length){
-                    this.isUserList = true;
-                    return false;
-                }else{
-                    this.isUserList = false;
-                }
-                if(!this.checkedKeys.length){
-                    return false
-                }
                 axios({
                     url: url3 + '/' + this.role.roleId,
                     responseType: 'json',
@@ -255,22 +239,10 @@ export default {
                     if(!res.errors){
                         this.$emit('saveRoleSuccess');
                     }
-                },(err)=>{
-                    let { message} = err;
-                    message.error(message);
                 });
             }else{
                 //create a new role
                 this.role.tenantId = Vue.currentTenantId;
-                if(!this.role.userList.length){
-                    this.isUserList = true;
-                    return false;
-                }else{
-                    this.isUserList = false;
-                }
-                if(!this.checkedKeys.length){
-                    return false
-                }
                 axios({
                     url: url3,
                     type: 'json',
@@ -278,13 +250,9 @@ export default {
                     data: this.role,
                     headers: { 'content-type': 'application/json'}
                 }).then((res) => {
-
                     if(!res.errors){
                         this.$emit('saveRoleSuccess');
                     }
-                },(err)=>{
-                    let { message} = err;
-                    message.error(message);
                 });
             }
         },
@@ -321,9 +289,3 @@ export default {
     }
 };
 </script>
-<style scoped>
-    .text-message{
-        font-size: 14px;
-        color: red;
-    }
-</style>

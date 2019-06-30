@@ -42,9 +42,7 @@
           <a-list-item-meta >
             <a slot="title" :href="item.href">{{item.roleName}}</a>
             <!--<a-avatar slot="avatar" style="backgroundColor:#87d068">{{item.roleName.substr(0,2)}}</a-avatar>-->
-            <a-avatar slot="avatar">
-              <img src="http://i1.fuimg.com/670436/086887467510daa5.png" alt="">
-            </a-avatar>
+            <img slot="avatar" src="http://i1.fuimg.com/670436/086887467510daa5.png" alt="">
           </a-list-item-meta>
         </a-list-item>
       </a-list>
