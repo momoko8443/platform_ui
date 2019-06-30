@@ -45,7 +45,7 @@
             </a-menu-item>
           </a-menu>
         </a-dropdown>
-        <a-select v-if="userProfile.tenants.length" :defaultValue="currentTenantId" style="width: 120px" @change="switchTenantHandler" style="float: right;margin-top: 16px;margin-right: 24px;">
+        <a-select v-if="!userProfile.tenants && userProfile.tenants.length > 0" :defaultValue="currentTenantId" style="width: 120px" @change="switchTenantHandler" style="float: right;margin-top: 16px;margin-right: 24px;">
           <a-select-option v-for="tenant in userProfile.tenants" :key="tenant.id" :value="tenant.id">{{tenant.tenanntName}}</a-select-option>
         </a-select>
       </a-menu>
