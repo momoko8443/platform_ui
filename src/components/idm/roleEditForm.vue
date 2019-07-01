@@ -16,7 +16,9 @@
         >
             <a-card title="角色名称">
                 <div>
+
                     <a-input placeholder="请输入角色名称" v-model="role.roleName"></a-input>
+                    <div class="text-message" v-if="!role.roleName">必输项</div>
                 </div>
             </a-card>
             <a-card title="成员分配" :style="{ marginTop: '16px' }">
@@ -36,7 +38,7 @@
                 </div>
             </a-card>
             <a-card title="权限分配" :style="{ marginTop: '16px' }">
-                <div class="text-message" v-if="!checkedKeys.length">至少选择一项</div>
+                <div class="text-message" v-if="checkTest">至少选择一项</div>
                 <div>
                     <a-tabs :activeKey="selectedAppId" @change="selectedAppIdChanged">
                         <a-tab-pane :tab="app.appName" v-for="app in applicationsMap" :key="app.id">
@@ -98,7 +100,6 @@ export default {
                     this.applicationsMap[''+app.id] = app;
                 }
                 this.selectedAppId = ''+result[0].id;
-                
 
                 let self = this;
                 this.getAllPermissionByApp(this.selectedAppId, (result)=>{
@@ -106,7 +107,6 @@ export default {
                         tmp = tmp.replace(new RegExp('id','g'), 'key');
                         result = JSON.parse(tmp);
                         self.applicationsMap[self.selectedAppId].treeData = result;
-                        
                         for (let i = 0; i < role.reqRoleDtoReqs.length; i++) {
                             const item = role.reqRoleDtoReqs[i];
                             const app = self.applicationsMap[''+item.appId];
@@ -145,6 +145,7 @@ export default {
     },
     data() {
         return {
+            checkTest:false,
             isUserList:false,
             form: this.$form.createForm(this),
             indeterminate: true,
@@ -193,6 +194,7 @@ export default {
                 !!checkedList.length &&
                 checkedList.length < plainOptions.length;
             this.checkAll = checkedList.length === plainOptions.length;
+
             if(!this.checkedList.length){
                 this.isUserList = true;
             }else{
@@ -236,15 +238,21 @@ export default {
             
             if(this.role.roleId){
                 //update an exists role
+                if(!this.role.roleName){
+                    return false;
+                }
                 if(!this.role.userList.length){
                     this.isUserList = true;
                     return false;
                 }else{
                     this.isUserList = false;
                 }
-                if(!this.checkedKeys.length){
-                    return false
-                }
+               if(!this.role.reqRoleDtoReqs.length){
+                    this.checkTest = true;
+                   return false;
+               }else{
+                   this.checkTest = false;
+               }
                 axios({
                     url: url3 + '/' + this.role.roleId,
                     responseType: 'json',
@@ -262,14 +270,20 @@ export default {
             }else{
                 //create a new role
                 this.role.tenantId = Vue.currentTenantId;
+                if(!this.role.roleName){
+                    return false;
+                }
                 if(!this.role.userList.length){
                     this.isUserList = true;
                     return false;
                 }else{
                     this.isUserList = false;
                 }
-                if(!this.checkedKeys.length){
-                    return false
+                if(!this.role.reqRoleDtoReqs.length){
+                    this.checkTest = true;
+                    return false;
+                }else{
+                    this.checkTest = false;
                 }
                 axios({
                     url: url3,
