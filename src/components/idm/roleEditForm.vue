@@ -107,6 +107,7 @@ export default {
                         tmp = tmp.replace(new RegExp('id','g'), 'key');
                         result = JSON.parse(tmp);
                         self.applicationsMap[self.selectedAppId].treeData = result;
+
                         for (let i = 0; i < role.reqRoleDtoReqs.length; i++) {
                             const item = role.reqRoleDtoReqs[i];
                             const app = self.applicationsMap[''+item.appId];
@@ -122,6 +123,7 @@ export default {
         },
         checkedKeys: function(newVal, oldVal){
             this.applicationsMap[this.selectedAppId].checkedKeys = newVal;
+            console.log("this.applicationsMap",this.applicationsMap);
         }
     },
     mounted () {
@@ -329,8 +331,21 @@ export default {
                 method: 'get',
                 //headers: { 'content-type': 'application/json'}
             }).then((res) => {
-                callback(res.data)
+                let arr = this.changeStrId(res.data);
+                callback(arr);
             });
+        },
+        //id转为字符串
+        changeStrId(arr){
+            if(arr.length){
+              for(let i = 0; i<arr.length; i++){
+                  arr[i].id = String(arr[i].id);
+                  if(arr[i].children.length){
+                    this.changeStrId(arr[i].children);
+                  }
+              }
+            }
+            return arr;
         }
     }
 };
