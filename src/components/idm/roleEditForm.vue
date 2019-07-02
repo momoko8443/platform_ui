@@ -86,30 +86,36 @@ export default {
     name: "roleEditForm",
     components: {},
     props: {
-        visible: Boolean,
-        role:Object
+        visible: Boolean,//控制edit面板显示不显示
+        role:Object  //role对象，如果是新建role，则传入一个默认的新role，如果是编辑，则传入需要编辑的role对象
     },
     watch: { 
         role: function(newVal, oldVal) { // watch it
             let role = newVal;
-            this.checkedList = role.userList;
+            this.checkedList = role.userList; //checkedList就是用来显示这个role下的成员
             console.log('bbb');
-            //console.log(JSON.stringify(this.applicationsMap));
+            //先去拿租户下所有 app
             this.getAllApplications((result)=>{
+                //由于返回的app list是数组形式，不利于后期查找，所以这里用for循环把它变成一个map结构
                 for (let i = 0; i < result.length; i++) {
                     const app = result[i];
                     app.id = ''+app.id;
                     this.applicationsMap[''+app.id] = app;
                 }
-                this.selectedAppId = ''+result[0].id;
+                this.selectedAppId = ''+result[0].id; //第一个app为默认选中的app
 
                 let self = this;
+                //接下去拿默认选择app的完整权限树
                 this.getAllPermissionByApp(this.selectedAppId, (result)=>{
+                        //因为拿回来的权限树的数据机构跟antd tree能用的不太一样，这里用全文替换的方式把里面一些key的名字换掉，方便antd tree展示。
                         let tmp = JSON.stringify(result).replace(new RegExp('name','g'), 'title');
                         tmp = tmp.replace(new RegExp('id','g'), 'key');
                         result = JSON.parse(tmp);
                         self.applicationsMap[self.selectedAppId].treeData = result;
+                        //end
 
+                        //接下去拿父组件传入的role对象里面，上一次用户勾选的permission集合。
+                        //然后上面99行我们定义了一个map对象，同样把上一次用户勾选的permission也存放在这个map里便于我们日后使用
                         for (let i = 0; i < role.reqRoleDtoReqs.length; i++) {
                             const item = role.reqRoleDtoReqs[i];
                             const app = self.applicationsMap[''+item.appId];
@@ -119,6 +125,7 @@ export default {
                             }
                             app.checkedKeys = pemssionIdsString;//item.pemssionIds;
                         }
+                        //checkedKeys是tree展示被选中tree叶子节点的集合，这里我们把默认选中的那些permission赋给它
                         self.checkedKeys =  self.applicationsMap[self.selectedAppId].checkedKeys;
                     });
                 });
@@ -170,12 +177,13 @@ export default {
         onSelect(selectedKeys, info){
             console.log("selectedKeys",selectedKeys);
         },
+        //当app切换的时候，比如php切换到java erp，我们需要去取新app的完全权限树
         selectedAppIdChanged(activeKey){
             activeKey = '' + activeKey;
             this.selectedAppId = activeKey;
             let self = this;
             if(!self.applicationsMap[self.selectedAppId].treeData || self.applicationsMap[self.selectedAppId].treeData.length === 0){
-                
+                //这里逻辑类似line108
                 self.getAllPermissionByApp(activeKey, (result)=>{
                     let tmp = JSON.stringify(result).replace(new RegExp('name','g'), 'title');
                     tmp = tmp.replace(new RegExp('id','g'), 'key');
@@ -238,9 +246,8 @@ export default {
                     this.role.reqRoleDtoReqs.push(a);
                 }          
             }
-            
+            //如果有roleId说明是更新，走put方法
             if(this.role.roleId){
-                //update an exists role
                 if(!this.role.roleName){
                     return false;
                 }
@@ -271,6 +278,7 @@ export default {
                     message.error(message);
                 });
             }else{
+                //如果没有roleId说明是一个新的role，走post方法
                 //create a new role
                 this.role.tenantId = Vue.currentTenantId;
                 if(!this.role.roleName){
@@ -305,6 +313,7 @@ export default {
                 });
             }
         },
+        //获取租户下所有成员
         getAllMembers(callback) {
             axios({
                 url: url + '?currentPage=1'+this.currentPage+'&pageSize=999',
@@ -315,6 +324,7 @@ export default {
                 callback(res.data.records)
             });
         },
+        //获取租户下所有app
         getAllApplications(callback) {
             axios({
                 url: url2,
@@ -325,6 +335,7 @@ export default {
                 callback(res.data)
             });
         },
+        //根据appId获取该app下的所有权限树
         getAllPermissionByApp(appId,callback){
             axios({
                 url: url2 + '/' + appId + "/permissions?tenantId=" + Vue.currentTenantId,
