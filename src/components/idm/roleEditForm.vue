@@ -38,11 +38,13 @@
                 </div>
             </a-card>
             <a-card title="权限分配" :style="{ marginTop: '16px' }">
-                <div class="text-message" v-if="checkTest">至少选择一项</div>
+                <div class="text-message" v-if="isCheckTest">至少选择一项</div>
+
                 <div>
                     <a-tabs :activeKey="selectedAppId" @change="selectedAppIdChanged">
                         <a-tab-pane :tab="app.appName" v-for="app in applicationsMap" :key="app.id">
                             <a-tree
+                                @select="onSelect"
                                 checkable
                                 v-model="checkedKeys"
                                 :treeData="app.treeData"
@@ -123,7 +125,6 @@ export default {
         },
         checkedKeys: function(newVal, oldVal){
             this.applicationsMap[this.selectedAppId].checkedKeys = newVal;
-            console.log("this.applicationsMap",this.applicationsMap);
         }
     },
     mounted () {
@@ -143,11 +144,10 @@ export default {
             }
             this.plainOptions = membersOpions;
         });
-        
     },
     data() {
         return {
-            checkTest:false,
+            isCheckTest:false,
             isUserList:false,
             form: this.$form.createForm(this),
             indeterminate: true,
@@ -165,9 +165,11 @@ export default {
         };
     },
     computed: {
-        
     },
     methods: {
+        onSelect(selectedKeys, info){
+            console.log("selectedKeys",selectedKeys);
+        },
         selectedAppIdChanged(activeKey){
             activeKey = '' + activeKey;
             this.selectedAppId = activeKey;
@@ -180,15 +182,16 @@ export default {
                     result = JSON.parse(tmp);
                     self.applicationsMap[activeKey].treeData = result;
                     self.applicationsMap = Object.assign({}, self.applicationsMap);
-                    self.checkedKeys = self.applicationsMap[activeKey].checkedKeys;
+                    self.checkedKeys = self.applicationsMap[activeKey].checkedKeys || [];
                 });
             }else{
-                self.checkedKeys = self.applicationsMap[activeKey].checkedKeys;
+                self.checkedKeys = self.applicationsMap[activeKey].checkedKeys || [];
             }
             
         },
         onClose() {
             //this.visible = false;
+            this.isCheckTest = false;
             this.$emit("update:visible", false);
         },
         onChange(checkedList) {
@@ -218,10 +221,8 @@ export default {
             this.autoExpandParent = false;
         },
         onCheck(checkedKeys) {
-            console.log("onCheck", checkedKeys);
             let app = this.applicationsMap[this.selectedAppId];
-            app.checkedKeys = checkedKeys;
-
+            app.checkedKeys = checkedKeys || [];
         },
         onSave(){
             //console.log(JSON.stringify(this.role));
@@ -249,12 +250,12 @@ export default {
                 }else{
                     this.isUserList = false;
                 }
-               if(!this.role.reqRoleDtoReqs.length){
-                    this.checkTest = true;
-                   return false;
-               }else{
-                   this.checkTest = false;
-               }
+                if(!this.isCheck(this.role.reqRoleDtoReqs)){
+                    this.isCheckTest = true;
+                    return false;
+                }else{
+                    this.isCheckTest = false;
+                }
                 axios({
                     url: url3 + '/' + this.role.roleId,
                     responseType: 'json',
@@ -281,11 +282,11 @@ export default {
                 }else{
                     this.isUserList = false;
                 }
-                if(!this.role.reqRoleDtoReqs.length){
-                    this.checkTest = true;
+                if(!this.isCheck(this.role.reqRoleDtoReqs)){
+                    this.isCheckTest = true;
                     return false;
                 }else{
-                    this.checkTest = false;
+                    this.isCheckTest = false;
                 }
                 axios({
                     url: url3,
@@ -346,6 +347,19 @@ export default {
               }
             }
             return arr;
+        },
+        //判断是否选择
+        isCheck(arr){
+            let result = false;
+            if(arr.length){
+                for(let i = 0 ;i<arr.length;i++){
+                    if(arr[i].pemssionIds.length){
+                        result = true;
+                        break;
+                    }
+                }
+            }
+            return result;
         }
     }
 };
