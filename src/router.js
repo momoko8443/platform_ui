@@ -11,8 +11,9 @@ import roleMgr from './views/idm/roleMgr.vue'
 Vue.use(Router)
 
 export default new Router({
-  mode: 'hash',
-  base: process.env.BASE_URL,
+  mode: 'history',
+  //base: process.env.BASE_URL?process.env.BASE_URL:'/main',
+  base: '/main',
   routes: [
     {
       path: '/',
